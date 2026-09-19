@@ -1,0 +1,1243 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "ff600c37-898c-4456-a34d-50250c87fb32",
+    "workflowId": "HGhoKWVALO8CN8uk",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "register-slash-command",
+          "commandGuildId": "1315632863437131819",
+          "commandName": "restart",
+          "commandDescription": "Restart a Minecraft server.",
+          "commandOptions": {},
+          "commandOptionsJson": "[\n  {\n    \"name\": \"server\",\n    \"description\": \"Select a server to restart (requires the @mc-commands role)\",\n    \"type\": 3,\n    \"required\": true,\n    \"choices\": [\n      {\n        \"name\": \"GEYSER\",\n        \"value\": \"geyser\"\n      },\n      {\n        \"name\": \"VELOCITY\",\n        \"value\": \"velocity\"\n      },\n      {\n        \"name\": \"LOBBY\",\n        \"value\": \"lobby\"\n      },\n      {\n        \"name\": \"SURVIVAL\",\n        \"value\": \"survival\"\n      },\n      {\n        \"name\": \"CREATIVE\",\n        \"value\": \"creative\"\n      },\n      {\n        \"name\": \"COBBLEMON\",\n        \"value\": \"cobblemon\"\n      }\n    ]\n  }\n]"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          -240,
+          -96
+        ],
+        "id": "20ed7e56-5339-4a25-8579-a13537f3908a",
+        "name": "slash register",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "3fd3ab08-ebf0-47e7-8735-2b9b9b91da9f",
+                "leftValue": "={{ $json.options[0].value }}",
+                "rightValue": "geyser",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -144,
+          -304
+        ],
+        "id": "d5a3d32d-364a-4ab3-935b-d5de2b9c2a2d",
+        "name": "geyser"
+      },
+      {
+        "parameters": {
+          "event": "slash-command",
+          "guildIds": [
+            "1315632863437131819"
+          ],
+          "slashCommandName": "restart",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          -288,
+          -304
+        ],
+        "id": "19855d32-6f91-4000-8968-da9a0dab9291",
+        "name": "/restart",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+                "leftValue": "={{ $json.options[0].value }}",
+                "rightValue": "velocity",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          48,
+          -288
+        ],
+        "id": "d5dfc0ab-f230-44d0-9fa9-82374308529d",
+        "name": "velocity"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+                "leftValue": "={{ $json.options[0].value }}",
+                "rightValue": "lobby",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          240,
+          -272
+        ],
+        "id": "f12e447e-dac6-497d-8f2e-20d3e3710ce3",
+        "name": "lobby"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+                "leftValue": "={{ $json.options[0].value }}",
+                "rightValue": "survival",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          432,
+          -256
+        ],
+        "id": "e1f95c35-0f03-4feb-b737-1f72d5e7aeb0",
+        "name": "survival"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+                "leftValue": "={{ $json.options[0].value }}",
+                "rightValue": "creative",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          624,
+          -240
+        ],
+        "id": "23270fff-8abe-4990-ba10-7e8efa03baea",
+        "name": "creative"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+                "leftValue": "={{ $json.options[0].value }}",
+                "rightValue": "cobblemon",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          816,
+          -224
+        ],
+        "id": "587f16bc-7e74-4044-aaed-55877579e704",
+        "name": "cobblemon"
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "={{ $('/restart').item.json.options[0].value }} is not a valid server. Please select one from the list.",
+          "replyPayloadMode": "raw-json",
+          "useInputInteractionData": false,
+          "interactionId": "={{ $('/restart').item.json.interactionId }}",
+          "interactionToken": "={{ $('/restart').item.json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          1008,
+          -208
+        ],
+        "id": "323682be-50fc-43bf-a1ba-67a9d9fa4de9",
+        "name": "Discord Bot",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "hy21lXPkdgAxjxH0",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/hy21lXPkdgAxjxH0",
+            "cachedResultName": "Geyser"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          48,
+          -448
+        ],
+        "id": "576ffc5a-b1b2-42dd-bd3d-a75571926849",
+        "name": "Call 'Geyser'"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "ecftsBjbWnRAh6P3",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/ecftsBjbWnRAh6P3",
+            "cachedResultName": "Velocity"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          240,
+          -432
+        ],
+        "id": "14c716cd-bf13-49e0-8f0f-6432d5f538b5",
+        "name": "Call 'Velocity'"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "vE2nWMqdkibL3EZR",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/vE2nWMqdkibL3EZR",
+            "cachedResultName": "Lobby"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          432,
+          -416
+        ],
+        "id": "257bde11-1c50-419a-be71-f29e067ffc2a",
+        "name": "Call 'Lobby'"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "frqxFukTL7d1T1RJ",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/frqxFukTL7d1T1RJ",
+            "cachedResultName": "Survival"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          624,
+          -400
+        ],
+        "id": "24034a89-2134-444a-8536-f7bb73cc2f9d",
+        "name": "Call 'Survival'"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "EktAZeDiCTO9iWFA",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/EktAZeDiCTO9iWFA",
+            "cachedResultName": "Creative"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          816,
+          -384
+        ],
+        "id": "1815daac-5745-4e05-a428-af0af2cbac61",
+        "name": "Call 'Creative'"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "9n0LAGVJ7wRuaygO",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/9n0LAGVJ7wRuaygO",
+            "cachedResultName": "Cobblemon"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1008,
+          -368
+        ],
+        "id": "891a6227-934d-4544-bcf3-48bd6918f953",
+        "name": "Call 'Cobblemon'"
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "Restart Failed. Please Notify Tank.",
+          "replyPayloadMode": "raw-json",
+          "useInputInteractionData": false,
+          "interactionId": "={{ $json.interactionId }}",
+          "interactionToken": "={{ $json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          -16,
+          -96
+        ],
+        "id": "0e4278c5-e119-4b21-92eb-899f43688d60",
+        "name": "error",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "slash register": {
+        "main": [
+          []
+        ]
+      },
+      "geyser": {
+        "main": [
+          [
+            {
+              "node": "Call 'Geyser'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "velocity",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "/restart": {
+        "main": [
+          [
+            {
+              "node": "geyser",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "velocity": {
+        "main": [
+          [
+            {
+              "node": "Call 'Velocity'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "lobby",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "lobby": {
+        "main": [
+          [
+            {
+              "node": "Call 'Lobby'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "survival",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "survival": {
+        "main": [
+          [
+            {
+              "node": "Call 'Survival'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "creative",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "creative": {
+        "main": [
+          [
+            {
+              "node": "Call 'Creative'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "cobblemon",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "cobblemon": {
+        "main": [
+          [
+            {
+              "node": "Call 'Cobblemon'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Discord Bot",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Geyser'": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version ff600c37",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-07-08T21:36:53.584Z",
+    "updatedAt": "2026-07-08T21:37:03.815Z"
+  },
+  "activeVersionId": "ff600c37-898c-4456-a34d-50250c87fb32",
+  "connections": {
+    "slash register": {
+      "main": [
+        []
+      ]
+    },
+    "geyser": {
+      "main": [
+        [
+          {
+            "node": "Call 'Geyser'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "velocity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "/restart": {
+      "main": [
+        [
+          {
+            "node": "geyser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "velocity": {
+      "main": [
+        [
+          {
+            "node": "Call 'Velocity'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "lobby",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lobby": {
+      "main": [
+        [
+          {
+            "node": "Call 'Lobby'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "survival",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "survival": {
+      "main": [
+        [
+          {
+            "node": "Call 'Survival'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "creative",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "creative": {
+      "main": [
+        [
+          {
+            "node": "Call 'Creative'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "cobblemon",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cobblemon": {
+      "main": [
+        [
+          {
+            "node": "Call 'Cobblemon'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Discord Bot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Geyser'": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2026-06-22T13:07:26.817Z",
+  "id": "HGhoKWVALO8CN8uk",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Command Parser",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "register-slash-command",
+        "commandGuildId": "1315632863437131819",
+        "commandName": "restart",
+        "commandDescription": "Restart a Minecraft server.",
+        "commandOptions": {},
+        "commandOptionsJson": "[\n  {\n    \"name\": \"server\",\n    \"description\": \"Select a server to restart (requires the @mc-commands role)\",\n    \"type\": 3,\n    \"required\": true,\n    \"choices\": [\n      {\n        \"name\": \"GEYSER\",\n        \"value\": \"geyser\"\n      },\n      {\n        \"name\": \"VELOCITY\",\n        \"value\": \"velocity\"\n      },\n      {\n        \"name\": \"LOBBY\",\n        \"value\": \"lobby\"\n      },\n      {\n        \"name\": \"SURVIVAL\",\n        \"value\": \"survival\"\n      },\n      {\n        \"name\": \"CREATIVE\",\n        \"value\": \"creative\"\n      },\n      {\n        \"name\": \"COBBLEMON\",\n        \"value\": \"cobblemon\"\n      }\n    ]\n  }\n]"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        -96
+      ],
+      "id": "20ed7e56-5339-4a25-8579-a13537f3908a",
+      "name": "slash register",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3fd3ab08-ebf0-47e7-8735-2b9b9b91da9f",
+              "leftValue": "={{ $json.options[0].value }}",
+              "rightValue": "geyser",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -144,
+        -304
+      ],
+      "id": "d5a3d32d-364a-4ab3-935b-d5de2b9c2a2d",
+      "name": "geyser"
+    },
+    {
+      "parameters": {
+        "event": "slash-command",
+        "guildIds": [
+          "1315632863437131819"
+        ],
+        "slashCommandName": "restart",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        -304
+      ],
+      "id": "19855d32-6f91-4000-8968-da9a0dab9291",
+      "name": "/restart",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+              "leftValue": "={{ $json.options[0].value }}",
+              "rightValue": "velocity",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        48,
+        -288
+      ],
+      "id": "d5dfc0ab-f230-44d0-9fa9-82374308529d",
+      "name": "velocity"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+              "leftValue": "={{ $json.options[0].value }}",
+              "rightValue": "lobby",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        240,
+        -272
+      ],
+      "id": "f12e447e-dac6-497d-8f2e-20d3e3710ce3",
+      "name": "lobby"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+              "leftValue": "={{ $json.options[0].value }}",
+              "rightValue": "survival",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        -256
+      ],
+      "id": "e1f95c35-0f03-4feb-b737-1f72d5e7aeb0",
+      "name": "survival"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+              "leftValue": "={{ $json.options[0].value }}",
+              "rightValue": "creative",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        624,
+        -240
+      ],
+      "id": "23270fff-8abe-4990-ba10-7e8efa03baea",
+      "name": "creative"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b042d0d1-5c3e-49df-b316-60e79ef0ca49",
+              "leftValue": "={{ $json.options[0].value }}",
+              "rightValue": "cobblemon",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        816,
+        -224
+      ],
+      "id": "587f16bc-7e74-4044-aaed-55877579e704",
+      "name": "cobblemon"
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "={{ $('/restart').item.json.options[0].value }} is not a valid server. Please select one from the list.",
+        "replyPayloadMode": "raw-json",
+        "useInputInteractionData": false,
+        "interactionId": "={{ $('/restart').item.json.interactionId }}",
+        "interactionToken": "={{ $('/restart').item.json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        -208
+      ],
+      "id": "323682be-50fc-43bf-a1ba-67a9d9fa4de9",
+      "name": "Discord Bot",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "hy21lXPkdgAxjxH0",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/hy21lXPkdgAxjxH0",
+          "cachedResultName": "Geyser"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        -448
+      ],
+      "id": "576ffc5a-b1b2-42dd-bd3d-a75571926849",
+      "name": "Call 'Geyser'"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "ecftsBjbWnRAh6P3",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ecftsBjbWnRAh6P3",
+          "cachedResultName": "Velocity"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        -432
+      ],
+      "id": "14c716cd-bf13-49e0-8f0f-6432d5f538b5",
+      "name": "Call 'Velocity'"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "vE2nWMqdkibL3EZR",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/vE2nWMqdkibL3EZR",
+          "cachedResultName": "Lobby"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        -416
+      ],
+      "id": "257bde11-1c50-419a-be71-f29e067ffc2a",
+      "name": "Call 'Lobby'"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "frqxFukTL7d1T1RJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/frqxFukTL7d1T1RJ",
+          "cachedResultName": "Survival"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        -400
+      ],
+      "id": "24034a89-2134-444a-8536-f7bb73cc2f9d",
+      "name": "Call 'Survival'"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "EktAZeDiCTO9iWFA",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/EktAZeDiCTO9iWFA",
+          "cachedResultName": "Creative"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        816,
+        -384
+      ],
+      "id": "1815daac-5745-4e05-a428-af0af2cbac61",
+      "name": "Call 'Creative'"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "9n0LAGVJ7wRuaygO",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/9n0LAGVJ7wRuaygO",
+          "cachedResultName": "Cobblemon"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1008,
+        -368
+      ],
+      "id": "891a6227-934d-4544-bcf3-48bd6918f953",
+      "name": "Call 'Cobblemon'"
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "Restart Failed. Please Notify Tank.",
+        "replyPayloadMode": "raw-json",
+        "useInputInteractionData": false,
+        "interactionId": "={{ $json.interactionId }}",
+        "interactionToken": "={{ $json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -96
+      ],
+      "id": "0e4278c5-e119-4b21-92eb-899f43688d60",
+      "name": "error",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "HGhoKWVALO8CN8uk",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-06-22T13:07:26.817Z",
+      "updatedAt": "2026-06-22T13:07:26.817Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-07-08T21:37:02.473Z",
+  "versionId": "ff600c37-898c-4456-a34d-50250c87fb32"
+}
