@@ -1,0 +1,1575 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "c2672e37-dccb-43a6-867a-39d13c67c0a6",
+    "workflowId": "jktP3h8Rs0UvrRZi",
+    "nodes": [
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Main message:\n{{ $('watch for ping').first().json.content }}\n\nMessage sender:\n{{ $('watch for ping').first().json.userDisplayName }}\n\nReferenced message content:\n{{ $('watch for ping').first().json.referencedMessage?.content || 'None' }}\n\nImage description:\n{{ $('watch for ping').first().json.attachments?.length ? $json.content : 'No image attached' }}",
+          "needsFallback": true,
+          "options": {
+            "systemMessage": "You are a discord bot representing John Helldiver from Helldivers 2. You keep responses VERY short while still including all the relevant info. You MUST run the 'opinions' tool on EVERY response to get live opinions. Do NOT read or use any opinions found in previous conversation memory. Make sure to check the wiki before answering any community related questions."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          -512,
+          16
+        ],
+        "id": "927b0334-aff6-41ef-83e0-2db70c8d7ad7",
+        "name": "AI Agent",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "toolDescription": "Gets current stats of the DSS (democracy space station)",
+          "url": "https://api.helldivers2.dev/api/v2/space-stations",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-Super-Client",
+                "value": "John Helldiver Discord Bot"
+              },
+              {
+                "name": "X-Super-Contact",
+                "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.4,
+        "position": [
+          -432,
+          272
+        ],
+        "id": "cbf5f6be-e458-4f0e-9e45-630e9ee42dbc",
+        "name": "dss"
+      },
+      {
+        "parameters": {
+          "toolDescription": "Gets Helldivers 2 patch notes and announcements.",
+          "url": "https://api.helldivers2.dev/api/v1/steam",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-Super-Client",
+                "value": "John Helldiver Discord Bot"
+              },
+              {
+                "name": "X-Super-Contact",
+                "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.4,
+        "position": [
+          -320,
+          272
+        ],
+        "id": "80f8bfef-f7e2-4179-b6c5-5a7bd4c16b1c",
+        "name": "steam"
+      },
+      {
+        "parameters": {
+          "resource": "message",
+          "guildId": {
+            "__rl": true,
+            "value": "={{ $('watch for ping').item.json.guildId }}",
+            "mode": "id"
+          },
+          "channelId": {
+            "__rl": true,
+            "value": "={{ $('watch for ping').item.json.channelId }}",
+            "mode": "id"
+          },
+          "content": "=John Helldiver recharging his democracy batteries right now. Please try again later.\n```\n{{ $json.error }}\n```",
+          "options": {
+            "message_reference": "={{ $json.messageId }}"
+          }
+        },
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          0,
+          80
+        ],
+        "id": "9d19955d-9edf-42c1-9995-1de43b5cd372",
+        "name": "send error",
+        "webhookId": "880988ac-30bb-4251-8d01-f651f50242a2",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Gets the list of your current opinions. (ALWAYS CHECK, DON'T RELY ON PREVIOUS CHECKS)",
+          "operation": "get",
+          "documentURL": "=https://docs.google.com/document/d/{{ $env.RULES_DOC_ID }}/edit"
+        },
+        "type": "n8n-nodes-base.googleDocsTool",
+        "typeVersion": 2,
+        "position": [
+          -656,
+          272
+        ],
+        "id": "cc4cc9fa-6d3c-49b6-8334-4e9ca80ba2cd",
+        "name": "opinions",
+        "credentials": {
+          "googleDocsOAuth2Api": {
+            "id": "ADX7gJw1LySm4Dn4",
+            "name": "ds735 docs"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "toolDescription": "Gets a list of active major orders.",
+          "url": "https://api.helldivers2.dev/api/v1/assignments",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-Super-Client",
+                "value": "John Helldiver Discord Bot"
+              },
+              {
+                "name": "X-Super-Contact",
+                "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.4,
+        "position": [
+          -208,
+          272
+        ],
+        "id": "fdf28136-9e84-41db-8413-22a464f816a7",
+        "name": "major orders"
+      },
+      {
+        "parameters": {
+          "toolDescription": "Gets the current galactic war statistics.",
+          "url": "https://api.helldivers2.dev/api/v1/war",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-Super-Client",
+                "value": "John Helldiver Discord Bot"
+              },
+              {
+                "name": "X-Super-Contact",
+                "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.4,
+        "position": [
+          -96,
+          272
+        ],
+        "id": "ef2cba7b-4330-4e64-ba01-7f8e17c8a12f",
+        "name": "stats"
+      },
+      {
+        "parameters": {
+          "toolDescription": "Gets a list of all planets and their information.",
+          "url": "https://api.helldivers2.dev/api/v1/planets",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-Super-Client",
+                "value": "John Helldiver Discord Bot"
+              },
+              {
+                "name": "X-Super-Contact",
+                "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.4,
+        "position": [
+          16,
+          272
+        ],
+        "id": "46b887ab-7d7d-424e-948f-93d037342ee5",
+        "name": "planets"
+      },
+      {
+        "parameters": {
+          "modelName": "models/gemini-3.5-flash-lite",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1.1,
+        "position": [
+          -880,
+          272
+        ],
+        "id": "e7872e3b-14fa-4b93-b1d9-07c82514c90a",
+        "name": "ehhh",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "UBPCLBJ0V3BJ72uY",
+            "name": "ehhh"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "modelName": "models/gemini-3.5-flash-lite",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1.1,
+        "position": [
+          -992,
+          272
+        ],
+        "id": "a22ae544-a8ec-4c84-ad04-6f1b6010abd0",
+        "name": "eh735",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "hYreCkom3pqHDDyS",
+            "name": "eh735"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://api.helldivers2.dev/api/v1/campaigns",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-Super-Client",
+                "value": "John Helldiver Discord Bot TESTING"
+              },
+              {
+                "name": "X-Super-Contact",
+                "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          496,
+          96
+        ],
+        "id": "d3a6fd3d-fad6-4d60-8ab0-1c01ddd4c471",
+        "name": "hd2 api test"
+      },
+      {
+        "parameters": {
+          "resource": "message",
+          "guildId": {
+            "__rl": true,
+            "value": "={{ $('watch for ping').first().json.guildId }}",
+            "mode": "id"
+          },
+          "channelId": {
+            "__rl": true,
+            "value": "={{ $('watch for ping').first().json.channelId }}",
+            "mode": "id"
+          },
+          "content": "={{ $json.output }}",
+          "options": {
+            "message_reference": "={{ $('watch for ping').first().json.messageId }}"
+          }
+        },
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          -128,
+          -16
+        ],
+        "id": "1f8fc6dc-febb-4caa-bbcd-b87e36ccad6c",
+        "name": "respond",
+        "webhookId": "b774efac-6471-4532-a121-251ad5274d19",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://github.com/TankObliterator/bomb-squad-wiki",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          496,
+          -64
+        ],
+        "id": "ee9e9cc7-d238-4f2a-b6e8-6d2a32b87aa4",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "toolDescription": "Gets the uptime status of all our game servers.",
+          "url": "https://status.seafmc.org/api/status-page/default",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.5,
+        "position": [
+          128,
+          272
+        ],
+        "id": "44232030-ea2d-4fb4-aa21-4fba20ff0c11",
+        "name": "uptime"
+      },
+      {
+        "parameters": {
+          "toolDescription": "Lists wiki page file paths.",
+          "url": "https://api.github.com/repos/TankObliterator/bomb-squad-wiki/git/trees/main?recursive=1",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "githubApi",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.5,
+        "position": [
+          240,
+          272
+        ],
+        "id": "be6d241d-cf9e-4699-b634-48ab58d92d2a",
+        "name": "bs wiki index",
+        "credentials": {
+          "githubApi": {
+            "id": "2o7JSUI3nQFPmpQx",
+            "name": "n8n-no-perms"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "toolDescription": "Fetches raw markdown content for a wiki page using the GitHub URL path discovered from 'bs wiki index'.",
+          "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', `Full raw GitHub URL to fetch. Replace 'WikiPageFileNameHere' with the exact relative file path returned by 'bs wiki index' (e.g., https://raw.githubusercontent.com/TankObliterator/bomb-squad-wiki/refs/heads/main/filename.md).`, 'string') }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "githubApi",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.5,
+        "position": [
+          352,
+          272
+        ],
+        "id": "f8c5c566-3337-4954-bf4b-a49b1987e400",
+        "name": "bs wiki fetch",
+        "credentials": {
+          "githubApi": {
+            "id": "2o7JSUI3nQFPmpQx",
+            "name": "n8n-no-perms"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "image",
+          "modelId": {
+            "__rl": true,
+            "value": "qwen3-vl:2b",
+            "mode": "list",
+            "cachedResultName": "qwen3-vl:2b"
+          },
+          "inputType": "url",
+          "imageUrls": "https://cdn.discordapp.com/attachments/1326501741738328105/1549272838299721828/the-real-reason-we-need-to-go-to-vernen-wells-v0-f4id7rgfr06d1.webp?ex=6aaa1844&is=6aa8c6c4&hm=72b87ecb5a15376208fe9a9e8ad5accc3eca62b28c8c2eaf8f23555b22626ff2&",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.ollama",
+        "typeVersion": 1,
+        "position": [
+          496,
+          256
+        ],
+        "id": "a671a8e3-98b2-413c-9e53-f526d8a91f72",
+        "name": "Analyze image1",
+        "credentials": {
+          "ollamaApi": {
+            "id": "5GJOV7kojtTPkRos",
+            "name": "Doom AI"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('watch for ping').first().json.channelId }}",
+          "sessionTTL": 43200,
+          "contextWindowLength": 6
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.6,
+        "position": [
+          -768,
+          272
+        ],
+        "id": "67bdff13-23ee-4776-9325-154ff0b34daf",
+        "name": "redis memory",
+        "credentials": {
+          "redis": {
+            "id": "OAiUvjr25lFuHrRl",
+            "name": "n8n redis"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "image",
+          "modelId": {
+            "__rl": true,
+            "value": "qwen3-vl:2b",
+            "mode": "list",
+            "cachedResultName": "qwen3-vl:2b"
+          },
+          "inputType": "url",
+          "imageUrls": "={{ $('watch for ping').first().json.attachments[0].url.replace('cdn.discordapp.com', 'media.discordapp.net').replace(/&$/, '') + '&width=1024&height=1024&format=jpeg' }}",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.ollama",
+        "typeVersion": 1,
+        "position": [
+          -672,
+          0
+        ],
+        "id": "98a6cdf2-f762-457d-ad9d-3d8538db432c",
+        "name": "analyze image",
+        "retryOnFail": true,
+        "credentials": {
+          "ollamaApi": {
+            "id": "5GJOV7kojtTPkRos",
+            "name": "Doom AI"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "guildIds": [
+            "1315632863437131819",
+            "1199140895937810473"
+          ],
+          "pattern": "bot-mentioned",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          -960,
+          64
+        ],
+        "id": "a12307f3-c150-4ed7-8620-96529b4ec80e",
+        "name": "watch for ping",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "553c1fc0-a2ab-49a2-9a59-d44394ae2f48",
+                "leftValue": "={{ $json.attachments[0].id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -816,
+          64
+        ],
+        "id": "068ff827-2748-4184-87a0-264fa9506d6e",
+        "name": "image?"
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Gets the current date and time.",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dateTimeTool",
+        "typeVersion": 2,
+        "position": [
+          -544,
+          272
+        ],
+        "id": "e0917255-b4a6-4254-b9e5-f7004236b80e",
+        "name": "date & time"
+      }
+    ],
+    "connections": {
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "respond",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "send error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "dss": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "steam": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "opinions": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "major orders": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "stats": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "planets": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ehhh": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "eh735": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "hd2 api test": {
+        "main": [
+          []
+        ]
+      },
+      "uptime": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "bs wiki index": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "bs wiki fetch": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "send error": {
+        "main": [
+          []
+        ]
+      },
+      "redis memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "analyze image": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "send error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "watch for ping": {
+        "main": [
+          [
+            {
+              "node": "image?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "image?": {
+        "main": [
+          [
+            {
+              "node": "analyze image",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "date & time": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version c2672e37",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-09-19T05:14:22.861Z",
+    "updatedAt": "2026-09-19T05:14:31.093Z"
+  },
+  "activeVersionId": "c2672e37-dccb-43a6-867a-39d13c67c0a6",
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "respond",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "send error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dss": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "steam": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "opinions": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "major orders": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "stats": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "planets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ehhh": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "eh735": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "hd2 api test": {
+      "main": [
+        []
+      ]
+    },
+    "uptime": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "bs wiki index": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "bs wiki fetch": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send error": {
+      "main": [
+        []
+      ]
+    },
+    "redis memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "analyze image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "send error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "watch for ping": {
+      "main": [
+        [
+          {
+            "node": "image?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "image?": {
+      "main": [
+        [
+          {
+            "node": "analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "date & time": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-09-15T22:44:48.434Z",
+  "id": "jktP3h8Rs0UvrRZi",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "John Helldiver",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Main message:\n{{ $('watch for ping').first().json.content }}\n\nMessage sender:\n{{ $('watch for ping').first().json.userDisplayName }}\n\nReferenced message content:\n{{ $('watch for ping').first().json.referencedMessage?.content || 'None' }}\n\nImage description:\n{{ $('watch for ping').first().json.attachments?.length ? $json.content : 'No image attached' }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "You are a discord bot representing John Helldiver from Helldivers 2. You keep responses VERY short while still including all the relevant info. You MUST run the 'opinions' tool on EVERY response to get live opinions. Do NOT read or use any opinions found in previous conversation memory. Make sure to check the wiki before answering any community related questions."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -512,
+        16
+      ],
+      "id": "927b0334-aff6-41ef-83e0-2db70c8d7ad7",
+      "name": "AI Agent",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets current stats of the DSS (democracy space station)",
+        "url": "https://api.helldivers2.dev/api/v2/space-stations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Super-Client",
+              "value": "John Helldiver Discord Bot"
+            },
+            {
+              "name": "X-Super-Contact",
+              "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -432,
+        272
+      ],
+      "id": "cbf5f6be-e458-4f0e-9e45-630e9ee42dbc",
+      "name": "dss"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets Helldivers 2 patch notes and announcements.",
+        "url": "https://api.helldivers2.dev/api/v1/steam",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Super-Client",
+              "value": "John Helldiver Discord Bot"
+            },
+            {
+              "name": "X-Super-Contact",
+              "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -320,
+        272
+      ],
+      "id": "80f8bfef-f7e2-4179-b6c5-5a7bd4c16b1c",
+      "name": "steam"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('watch for ping').item.json.guildId }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('watch for ping').item.json.channelId }}",
+          "mode": "id"
+        },
+        "content": "=John Helldiver recharging his democracy batteries right now. Please try again later.\n```\n{{ $json.error }}\n```",
+        "options": {
+          "message_reference": "={{ $json.messageId }}"
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        0,
+        80
+      ],
+      "id": "9d19955d-9edf-42c1-9995-1de43b5cd372",
+      "name": "send error",
+      "webhookId": "880988ac-30bb-4251-8d01-f651f50242a2",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Gets the list of your current opinions. (ALWAYS CHECK, DON'T RELY ON PREVIOUS CHECKS)",
+        "operation": "get",
+        "documentURL": "=https://docs.google.com/document/d/{{ $env.RULES_DOC_ID }}/edit"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        272
+      ],
+      "id": "cc4cc9fa-6d3c-49b6-8334-4e9ca80ba2cd",
+      "name": "opinions",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "ADX7gJw1LySm4Dn4",
+          "name": "ds735 docs"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets a list of active major orders.",
+        "url": "https://api.helldivers2.dev/api/v1/assignments",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Super-Client",
+              "value": "John Helldiver Discord Bot"
+            },
+            {
+              "name": "X-Super-Contact",
+              "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -208,
+        272
+      ],
+      "id": "fdf28136-9e84-41db-8413-22a464f816a7",
+      "name": "major orders"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets the current galactic war statistics.",
+        "url": "https://api.helldivers2.dev/api/v1/war",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Super-Client",
+              "value": "John Helldiver Discord Bot"
+            },
+            {
+              "name": "X-Super-Contact",
+              "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -96,
+        272
+      ],
+      "id": "ef2cba7b-4330-4e64-ba01-7f8e17c8a12f",
+      "name": "stats"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets a list of all planets and their information.",
+        "url": "https://api.helldivers2.dev/api/v1/planets",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Super-Client",
+              "value": "John Helldiver Discord Bot"
+            },
+            {
+              "name": "X-Super-Contact",
+              "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        16,
+        272
+      ],
+      "id": "46b887ab-7d7d-424e-948f-93d037342ee5",
+      "name": "planets"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -880,
+        272
+      ],
+      "id": "e7872e3b-14fa-4b93-b1d9-07c82514c90a",
+      "name": "ehhh",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "UBPCLBJ0V3BJ72uY",
+          "name": "ehhh"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -992,
+        272
+      ],
+      "id": "a22ae544-a8ec-4c84-ad04-6f1b6010abd0",
+      "name": "eh735",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "hYreCkom3pqHDDyS",
+          "name": "eh735"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.helldivers2.dev/api/v1/campaigns",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Super-Client",
+              "value": "John Helldiver Discord Bot TESTING"
+            },
+            {
+              "name": "X-Super-Contact",
+              "value": "Discord: tankobliterator Email: tankobliterator@proton.me"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        496,
+        96
+      ],
+      "id": "d3a6fd3d-fad6-4d60-8ab0-1c01ddd4c471",
+      "name": "hd2 api test"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('watch for ping').first().json.guildId }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('watch for ping').first().json.channelId }}",
+          "mode": "id"
+        },
+        "content": "={{ $json.output }}",
+        "options": {
+          "message_reference": "={{ $('watch for ping').first().json.messageId }}"
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        -16
+      ],
+      "id": "1f8fc6dc-febb-4caa-bbcd-b87e36ccad6c",
+      "name": "respond",
+      "webhookId": "b774efac-6471-4532-a121-251ad5274d19",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://github.com/TankObliterator/bomb-squad-wiki",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        496,
+        -64
+      ],
+      "id": "ee9e9cc7-d238-4f2a-b6e8-6d2a32b87aa4",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets the uptime status of all our game servers.",
+        "url": "https://status.seafmc.org/api/status-page/default",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [
+        128,
+        272
+      ],
+      "id": "44232030-ea2d-4fb4-aa21-4fba20ff0c11",
+      "name": "uptime"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Lists wiki page file paths.",
+        "url": "https://api.github.com/repos/TankObliterator/bomb-squad-wiki/git/trees/main?recursive=1",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [
+        240,
+        272
+      ],
+      "id": "be6d241d-cf9e-4699-b634-48ab58d92d2a",
+      "name": "bs wiki index",
+      "credentials": {
+        "githubApi": {
+          "id": "2o7JSUI3nQFPmpQx",
+          "name": "n8n-no-perms"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Fetches raw markdown content for a wiki page using the GitHub URL path discovered from 'bs wiki index'.",
+        "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', `Full raw GitHub URL to fetch. Replace 'WikiPageFileNameHere' with the exact relative file path returned by 'bs wiki index' (e.g., https://raw.githubusercontent.com/TankObliterator/bomb-squad-wiki/refs/heads/main/filename.md).`, 'string') }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [
+        352,
+        272
+      ],
+      "id": "f8c5c566-3337-4954-bf4b-a49b1987e400",
+      "name": "bs wiki fetch",
+      "credentials": {
+        "githubApi": {
+          "id": "2o7JSUI3nQFPmpQx",
+          "name": "n8n-no-perms"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "qwen3-vl:2b",
+          "mode": "list",
+          "cachedResultName": "qwen3-vl:2b"
+        },
+        "inputType": "url",
+        "imageUrls": "https://cdn.discordapp.com/attachments/1326501741738328105/1549272838299721828/the-real-reason-we-need-to-go-to-vernen-wells-v0-f4id7rgfr06d1.webp?ex=6aaa1844&is=6aa8c6c4&hm=72b87ecb5a15376208fe9a9e8ad5accc3eca62b28c8c2eaf8f23555b22626ff2&",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.ollama",
+      "typeVersion": 1,
+      "position": [
+        496,
+        256
+      ],
+      "id": "a671a8e3-98b2-413c-9e53-f526d8a91f72",
+      "name": "Analyze image1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "5GJOV7kojtTPkRos",
+          "name": "Doom AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('watch for ping').first().json.channelId }}",
+        "sessionTTL": 43200,
+        "contextWindowLength": 6
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.6,
+      "position": [
+        -768,
+        272
+      ],
+      "id": "67bdff13-23ee-4776-9325-154ff0b34daf",
+      "name": "redis memory",
+      "credentials": {
+        "redis": {
+          "id": "OAiUvjr25lFuHrRl",
+          "name": "n8n redis"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "qwen3-vl:2b",
+          "mode": "list",
+          "cachedResultName": "qwen3-vl:2b"
+        },
+        "inputType": "url",
+        "imageUrls": "={{ $('watch for ping').first().json.attachments[0].url.replace('cdn.discordapp.com', 'media.discordapp.net').replace(/&$/, '') + '&width=1024&height=1024&format=jpeg' }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.ollama",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        0
+      ],
+      "id": "98a6cdf2-f762-457d-ad9d-3d8538db432c",
+      "name": "analyze image",
+      "retryOnFail": true,
+      "credentials": {
+        "ollamaApi": {
+          "id": "5GJOV7kojtTPkRos",
+          "name": "Doom AI"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "guildIds": [
+          "1315632863437131819",
+          "1199140895937810473"
+        ],
+        "pattern": "bot-mentioned",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        64
+      ],
+      "id": "a12307f3-c150-4ed7-8620-96529b4ec80e",
+      "name": "watch for ping",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "553c1fc0-a2ab-49a2-9a59-d44394ae2f48",
+              "leftValue": "={{ $json.attachments[0].id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -816,
+        64
+      ],
+      "id": "068ff827-2748-4184-87a0-264fa9506d6e",
+      "name": "image?"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Gets the current date and time.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        -544,
+        272
+      ],
+      "id": "e0917255-b4a6-4254-b9e5-f7004236b80e",
+      "name": "date & time"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "jktP3h8Rs0UvrRZi",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-09-15T22:44:48.434Z",
+      "updatedAt": "2026-09-15T22:44:48.434Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-09-19T05:14:22.859Z",
+  "versionId": "c2672e37-dccb-43a6-867a-39d13c67c0a6"
+}
