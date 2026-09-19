@@ -1,0 +1,167 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "47bd178c-e9a4-4013-8c41-728137d68a34",
+    "workflowId": "qmi2562atiJCpECb",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 10
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          0
+        ],
+        "id": "78188308-dbd7-4a74-bb02-c4b19a383d5e",
+        "name": "run every 10 min"
+      },
+      {
+        "parameters": {
+          "operation": "set-bot-activity",
+          "botActivityName": "Helldivers 2"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          160,
+          0
+        ],
+        "id": "d7784833-3265-4bbb-8fab-52f98e2ddc5c",
+        "name": "set status",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "run every 10 min": {
+        "main": [
+          [
+            {
+              "node": "set status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version 47bd178c",
+    "description": "",
+    "autosaved": false,
+    "createdAt": "2026-09-19T03:37:34.179Z",
+    "updatedAt": "2026-09-19T03:37:35.315Z"
+  },
+  "activeVersionId": "47bd178c-e9a4-4013-8c41-728137d68a34",
+  "connections": {
+    "run every 10 min": {
+      "main": [
+        [
+          {
+            "node": "set status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-09T05:00:29.426Z",
+  "id": "qmi2562atiJCpECb",
+  "isArchived": false,
+  "meta": null,
+  "name": "Status",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "78188308-dbd7-4a74-bb02-c4b19a383d5e",
+      "name": "run every 10 min"
+    },
+    {
+      "parameters": {
+        "operation": "set-bot-activity",
+        "botActivityName": "Helldivers 2"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        160,
+        0
+      ],
+      "id": "d7784833-3265-4bbb-8fab-52f98e2ddc5c",
+      "name": "set status",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "qmi2562atiJCpECb",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-06-09T05:00:29.426Z",
+      "updatedAt": "2026-06-09T05:00:29.426Z"
+    }
+  ],
+  "staticData": {
+    "node:Run Every Hour": {
+      "recurrenceRules": [
+        null
+      ],
+      "recurrenceRuleSignatures": [
+        null
+      ]
+    },
+    "node:run every 10 min": {
+      "recurrenceRules": [
+        null
+      ],
+      "recurrenceRuleSignatures": [
+        null
+      ]
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-09-19T03:37:34.178Z",
+  "versionId": "47bd178c-e9a4-4013-8c41-728137d68a34"
+}
