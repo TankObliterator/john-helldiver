@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "cea888ac-0ba1-423d-a1cc-a901030554fa",
+    "versionId": "4752322a-0dd4-411b-9a74-ff26b7267bbc",
     "workflowId": "9n0LAGVJ7wRuaygO",
     "nodes": [
       {
@@ -151,58 +151,13 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "http://amp.ts.tankobliterator.net:8080/API/Core/Login",
-          "sendBody": true,
-          "specifyBody": "json",
-          "jsonBody": "={\n  \"username\": \"{{ $env.AMP_USER }}\",\n  \"password\": \"{{ $env.AMP_PASSWORD }}\",\n  \"token\": \"\", \n  \"rememberMe\": false\n}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.4,
-        "position": [
-          688,
-          -112
-        ],
-        "id": "3f39e2a2-66dd-454c-ab8f-5c62f97dc96a",
-        "name": "HTTP Request"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "http://amp.ts.tankobliterator.net:8080/API/ADSModule/RestartInstance",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "Authorization",
-                "value": "=Bearer {{ $json.sessionID }}"
-              }
-            ]
-          },
-          "sendBody": true,
-          "specifyBody": "json",
-          "jsonBody": "{\n    \"InstanceName\": \"Cobblemon01\"\n}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.4,
-        "position": [
-          880,
-          -112
-        ],
-        "id": "66028839-bca8-4324-b7ef-5bf08fd45f53",
-        "name": "HTTP Request1"
-      },
-      {
-        "parameters": {
-          "method": "POST",
           "url": "http://amp.ts.tankobliterator.net:8080/API/ADSModule/GetInstance",
           "sendHeaders": true,
           "headerParameters": {
             "parameters": [
               {
                 "name": "Authorization",
-                "value": "=Bearer {{ $('HTTP Request').item.json.sessionID }}"
+                "value": "=Bearer {{ $('get token').item.json.sessionID }}"
               }
             ]
           },
@@ -229,7 +184,7 @@
             "parameters": [
               {
                 "name": "Authorization",
-                "value": "=Bearer {{ $('HTTP Request').item.json.sessionID }}"
+                "value": "=Bearer {{ $('get token').item.json.sessionID }}"
               }
             ]
           },
@@ -286,6 +241,51 @@
         "id": "dc176d61-e4a2-4886-a714-5752d9321550",
         "name": "5 sec delay",
         "webhookId": "9148b209-3b03-40aa-9231-080eda7669bd"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://amp.ts.tankobliterator.net:8080/API/Core/Login",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"username\": \"{{ $env.AMP_USER }}\",\n  \"password\": \"{{ $env.AMP_PASS }}\",\n  \"token\": \"\", \n  \"rememberMe\": false\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          688,
+          -112
+        ],
+        "id": "3f39e2a2-66dd-454c-ab8f-5c62f97dc96a",
+        "name": "get token"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://amp.ts.tankobliterator.net:8080/API/ADSModule/RestartInstance",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "=Bearer {{ $json.sessionID }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "{\n    \"InstanceName\": \"Cobblemon01\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          880,
+          -112
+        ],
+        "id": "66028839-bca8-4324-b7ef-5bf08fd45f53",
+        "name": "restart cobblemon"
       }
     ],
     "connections": {
@@ -345,29 +345,7 @@
         "main": [
           [
             {
-              "node": "HTTP Request",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "HTTP Request": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "HTTP Request1": {
-        "main": [
-          [
-            {
-              "node": "update request",
+              "node": "get token",
               "type": "main",
               "index": 0
             }
@@ -428,17 +406,39 @@
             }
           ]
         ]
+      },
+      "get token": {
+        "main": [
+          [
+            {
+              "node": "restart cobblemon",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "restart cobblemon": {
+        "main": [
+          [
+            {
+              "node": "update request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Eon Hunt",
-    "name": "Version cea888ac",
+    "name": "Version 4752322a",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-09-19T05:26:44.629Z",
-    "updatedAt": "2026-09-19T05:26:51.558Z"
+    "createdAt": "2026-09-19T06:13:27.224Z",
+    "updatedAt": "2026-09-19T06:13:33.886Z"
   },
-  "activeVersionId": "cea888ac-0ba1-423d-a1cc-a901030554fa",
+  "activeVersionId": "4752322a-0dd4-411b-9a74-ff26b7267bbc",
   "connections": {
     "back up notify": {
       "main": [
@@ -496,29 +496,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request1": {
-      "main": [
-        [
-          {
-            "node": "update request",
+            "node": "get token",
             "type": "main",
             "index": 0
           }
@@ -574,6 +552,28 @@
         [
           {
             "node": "back up notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get token": {
+      "main": [
+        [
+          {
+            "node": "restart cobblemon",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "restart cobblemon": {
+      "main": [
+        [
+          {
+            "node": "update request",
             "type": "main",
             "index": 0
           }
@@ -737,58 +737,13 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://amp.ts.tankobliterator.net:8080/API/Core/Login",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"username\": \"{{ $env.AMP_USER }}\",\n  \"password\": \"{{ $env.AMP_PASSWORD }}\",\n  \"token\": \"\", \n  \"rememberMe\": false\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [
-        688,
-        -112
-      ],
-      "id": "3f39e2a2-66dd-454c-ab8f-5c62f97dc96a",
-      "name": "HTTP Request"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "http://amp.ts.tankobliterator.net:8080/API/ADSModule/RestartInstance",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "=Bearer {{ $json.sessionID }}"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "{\n    \"InstanceName\": \"Cobblemon01\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [
-        880,
-        -112
-      ],
-      "id": "66028839-bca8-4324-b7ef-5bf08fd45f53",
-      "name": "HTTP Request1"
-    },
-    {
-      "parameters": {
-        "method": "POST",
         "url": "http://amp.ts.tankobliterator.net:8080/API/ADSModule/GetInstance",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Authorization",
-              "value": "=Bearer {{ $('HTTP Request').item.json.sessionID }}"
+              "value": "=Bearer {{ $('get token').item.json.sessionID }}"
             }
           ]
         },
@@ -815,7 +770,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "=Bearer {{ $('HTTP Request').item.json.sessionID }}"
+              "value": "=Bearer {{ $('get token').item.json.sessionID }}"
             }
           ]
         },
@@ -872,6 +827,51 @@
       "id": "dc176d61-e4a2-4886-a714-5752d9321550",
       "name": "5 sec delay",
       "webhookId": "9148b209-3b03-40aa-9231-080eda7669bd"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://amp.ts.tankobliterator.net:8080/API/Core/Login",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"username\": \"{{ $env.AMP_USER }}\",\n  \"password\": \"{{ $env.AMP_PASS }}\",\n  \"token\": \"\", \n  \"rememberMe\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        688,
+        -112
+      ],
+      "id": "3f39e2a2-66dd-454c-ab8f-5c62f97dc96a",
+      "name": "get token"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://amp.ts.tankobliterator.net:8080/API/ADSModule/RestartInstance",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.sessionID }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"InstanceName\": \"Cobblemon01\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        880,
+        -112
+      ],
+      "id": "66028839-bca8-4324-b7ef-5bf08fd45f53",
+      "name": "restart cobblemon"
     }
   ],
   "pinData": {},
@@ -896,6 +896,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-09-19T05:26:44.627Z",
-  "versionId": "cea888ac-0ba1-423d-a1cc-a901030554fa"
+  "updatedAt": "2026-09-19T06:13:27.221Z",
+  "versionId": "4752322a-0dd4-411b-9a74-ff26b7267bbc"
 }
