@@ -1,0 +1,813 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "c1f5767f-9759-45a2-9360-62cf4985ac3c",
+    "workflowId": "EktAZeDiCTO9iWFA",
+    "nodes": [
+      {
+        "parameters": {
+          "resource": "message",
+          "guildId": {
+            "__rl": true,
+            "value": "={{ $('/restart creative').item.json.guildId }}",
+            "mode": "id"
+          },
+          "channelId": {
+            "__rl": true,
+            "value": "={{ $('/restart creative').item.json.channelId }}",
+            "mode": "id"
+          },
+          "content": "=Creative is now back online!\n<@{{ $('/restart creative').item.json.userId }}>",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          1264,
+          320
+        ],
+        "id": "24c2042a-c21b-46b5-9753-ba39814f91c7",
+        "name": "back up notify",
+        "webhookId": "a7ddfd44-93d1-4dbe-84bb-7f54d0d2466b",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "=<@{{ $('/restart creative').item.json.userId }}> Has initiated a `Creative` Reboot.\nThis should not take more than a minute.",
+          "replyPayloadMode": "raw-json",
+          "useInputInteractionData": false,
+          "interactionId": "={{ $('/restart creative').item.json.interactionId }}",
+          "interactionToken": "={{ $('/restart creative').item.json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          880,
+          -112
+        ],
+        "id": "5bd0d278-227d-4ae9-b94a-d8b4f1352129",
+        "name": "update request",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+                "leftValue": "={{ $json.data.running }}",
+                "rightValue": false,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          688,
+          96
+        ],
+        "id": "da7a2565-38c2-4458-b0e5-247c06e044a7",
+        "name": "Is stopped?"
+      },
+      {
+        "parameters": {
+          "amount": 1
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          576,
+          320
+        ],
+        "id": "b5554e58-4611-478a-89ae-3f5ddc00f5ba",
+        "name": "1 sec delay",
+        "webhookId": "42d45db0-1b58-41f1-a898-5b1e5f5fb8df"
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          960,
+          320
+        ],
+        "id": "4b7827cb-21fc-4130-a39e-9f16bab8b76e",
+        "name": "3 sec delay",
+        "webhookId": "a0b313aa-61d2-45c0-8c3b-015557beebf4"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+                "leftValue": "={{ $json.data.running }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1056,
+          96
+        ],
+        "id": "2b4db6d0-b36a-4ad1-b240-020c4e5d07a9",
+        "name": "Is running?"
+      },
+      {
+        "parameters": {
+          "url": "https://192.168.1.2:8443/api/v2/servers/97e9ad89-f479-43e7-85bd-3890ea7bebf9/stats",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          528,
+          96
+        ],
+        "id": "fa97aaea-6a6a-4454-abba-249369ea7e36",
+        "name": "check status",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "k5Q9f9nQnIY53kOU",
+            "name": "Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://192.168.1.2:8443/api/v2/servers/97e9ad89-f479-43e7-85bd-3890ea7bebf9/stats",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          896,
+          96
+        ],
+        "id": "c8e18832-a66e-4215-a8a9-5cc34e5079ad",
+        "name": "check status1",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "k5Q9f9nQnIY53kOU",
+            "name": "Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          512,
+          -112
+        ],
+        "id": "291276d8-23ef-4b94-a035-4c1f39da33e6",
+        "name": "/restart creative"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://192.168.1.2:8443/api/v2/servers/97e9ad89-f479-43e7-85bd-3890ea7bebf9/action/restart_server",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          688,
+          -112
+        ],
+        "id": "0d4b9f90-4e96-4aaf-8293-d4813dee6a2c",
+        "name": "restart server",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "k5Q9f9nQnIY53kOU",
+            "name": "Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 30
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1248,
+          80
+        ],
+        "id": "259083a5-fcdd-4641-ae4b-fadd45e88a34",
+        "name": "30 sec delay",
+        "webhookId": "e410a1e6-f688-4395-a9cc-6ec13994f854"
+      }
+    ],
+    "connections": {
+      "back up notify": {
+        "main": [
+          []
+        ]
+      },
+      "update request": {
+        "main": [
+          [
+            {
+              "node": "check status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is stopped?": {
+        "main": [
+          [
+            {
+              "node": "check status1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "1 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "1 sec delay": {
+        "main": [
+          [
+            {
+              "node": "check status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "3 sec delay": {
+        "main": [
+          [
+            {
+              "node": "check status1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is running?": {
+        "main": [
+          [
+            {
+              "node": "30 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "3 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check status": {
+        "main": [
+          [
+            {
+              "node": "Is stopped?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check status1": {
+        "main": [
+          [
+            {
+              "node": "Is running?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "/restart creative": {
+        "main": [
+          [
+            {
+              "node": "restart server",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "restart server": {
+        "main": [
+          [
+            {
+              "node": "update request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "30 sec delay": {
+        "main": [
+          [
+            {
+              "node": "back up notify",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version c1f5767f",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-06-22T15:12:19.787Z",
+    "updatedAt": "2026-06-22T15:12:33.322Z"
+  },
+  "activeVersionId": "c1f5767f-9759-45a2-9360-62cf4985ac3c",
+  "connections": {
+    "back up notify": {
+      "main": [
+        []
+      ]
+    },
+    "update request": {
+      "main": [
+        [
+          {
+            "node": "check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is stopped?": {
+      "main": [
+        [
+          {
+            "node": "check status1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "1 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 sec delay": {
+      "main": [
+        [
+          {
+            "node": "check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3 sec delay": {
+      "main": [
+        [
+          {
+            "node": "check status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is running?": {
+      "main": [
+        [
+          {
+            "node": "30 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "3 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check status": {
+      "main": [
+        [
+          {
+            "node": "Is stopped?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check status1": {
+      "main": [
+        [
+          {
+            "node": "Is running?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "/restart creative": {
+      "main": [
+        [
+          {
+            "node": "restart server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "restart server": {
+      "main": [
+        [
+          {
+            "node": "update request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "30 sec delay": {
+      "main": [
+        [
+          {
+            "node": "back up notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-22T14:12:08.683Z",
+  "id": "EktAZeDiCTO9iWFA",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Creative",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('/restart creative').item.json.guildId }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('/restart creative').item.json.channelId }}",
+          "mode": "id"
+        },
+        "content": "=Creative is now back online!\n<@{{ $('/restart creative').item.json.userId }}>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        320
+      ],
+      "id": "24c2042a-c21b-46b5-9753-ba39814f91c7",
+      "name": "back up notify",
+      "webhookId": "a7ddfd44-93d1-4dbe-84bb-7f54d0d2466b",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "=<@{{ $('/restart creative').item.json.userId }}> Has initiated a `Creative` Reboot.\nThis should not take more than a minute.",
+        "replyPayloadMode": "raw-json",
+        "useInputInteractionData": false,
+        "interactionId": "={{ $('/restart creative').item.json.interactionId }}",
+        "interactionToken": "={{ $('/restart creative').item.json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -112
+      ],
+      "id": "5bd0d278-227d-4ae9-b94a-d8b4f1352129",
+      "name": "update request",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+              "leftValue": "={{ $json.data.running }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        688,
+        96
+      ],
+      "id": "da7a2565-38c2-4458-b0e5-247c06e044a7",
+      "name": "Is stopped?"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        576,
+        320
+      ],
+      "id": "b5554e58-4611-478a-89ae-3f5ddc00f5ba",
+      "name": "1 sec delay",
+      "webhookId": "42d45db0-1b58-41f1-a898-5b1e5f5fb8df"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        320
+      ],
+      "id": "4b7827cb-21fc-4130-a39e-9f16bab8b76e",
+      "name": "3 sec delay",
+      "webhookId": "a0b313aa-61d2-45c0-8c3b-015557beebf4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+              "leftValue": "={{ $json.data.running }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1056,
+        96
+      ],
+      "id": "2b4db6d0-b36a-4ad1-b240-020c4e5d07a9",
+      "name": "Is running?"
+    },
+    {
+      "parameters": {
+        "url": "https://192.168.1.2:8443/api/v2/servers/97e9ad89-f479-43e7-85bd-3890ea7bebf9/stats",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        528,
+        96
+      ],
+      "id": "fa97aaea-6a6a-4454-abba-249369ea7e36",
+      "name": "check status",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "k5Q9f9nQnIY53kOU",
+          "name": "Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://192.168.1.2:8443/api/v2/servers/97e9ad89-f479-43e7-85bd-3890ea7bebf9/stats",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        896,
+        96
+      ],
+      "id": "c8e18832-a66e-4215-a8a9-5cc34e5079ad",
+      "name": "check status1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "k5Q9f9nQnIY53kOU",
+          "name": "Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        512,
+        -112
+      ],
+      "id": "291276d8-23ef-4b94-a035-4c1f39da33e6",
+      "name": "/restart creative"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://192.168.1.2:8443/api/v2/servers/97e9ad89-f479-43e7-85bd-3890ea7bebf9/action/restart_server",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        688,
+        -112
+      ],
+      "id": "0d4b9f90-4e96-4aaf-8293-d4813dee6a2c",
+      "name": "restart server",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "k5Q9f9nQnIY53kOU",
+          "name": "Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1248,
+        80
+      ],
+      "id": "259083a5-fcdd-4641-ae4b-fadd45e88a34",
+      "name": "30 sec delay",
+      "webhookId": "e410a1e6-f688-4395-a9cc-6ec13994f854"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1,
+    "timezone": "America/Denver",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "EktAZeDiCTO9iWFA",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-06-22T14:12:08.683Z",
+      "updatedAt": "2026-06-22T14:12:08.683Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-06-22T15:12:19.784Z",
+  "versionId": "c1f5767f-9759-45a2-9360-62cf4985ac3c"
+}
