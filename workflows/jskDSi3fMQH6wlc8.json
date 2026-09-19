@@ -707,7 +707,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const allowedWorkflowIds = [\n  \"EktAZeDiCTO9iWFA\",\n  \"HGhoKWVALO8CN8uk\",\n  \"QkI-ai698wZcglpJSk-p_\",\n  \"bYVdpTmlwSyUpkeO\",\n  \"ecftsBjbWnRAh6P3\",\n  \"frqxFukTL7d1T1RJ\",\n  \"hy21lXPkdgAxjxH0\",\n  \"j9iRsQg7vkF9UL62\",\n  \"jktP3h8Rs0UvrRZi\",\n  \"jskDSi3fMQH6wlc8\",\n  \"qmi2562atiJCpECb\",\n  \"vE2nWMqdkibL3EZR\",\n  \"vHOx4WpVss6Mn7hm\"\n];\n\nreturn $input.all().filter(item => allowedWorkflowIds.includes(item.json.id));"
+        "jsCode": "const allowedWorkflowIds = [\n  \"9n0LAGVJ7wRuaygO\",\n  \"EktAZeDiCTO9iWFA\",\n  \"HGhoKWVALO8CN8uk\",\n  \"QkI-ai698wZcglpJSk-p_\",\n  \"bYVdpTmlwSyUpkeO\",\n  \"ecftsBjbWnRAh6P3\",\n  \"frqxFukTL7d1T1RJ\",\n  \"hy21lXPkdgAxjxH0\",\n  \"j9iRsQg7vkF9UL62\",\n  \"jktP3h8Rs0UvrRZi\",\n  \"jskDSi3fMQH6wlc8\",\n  \"qmi2562atiJCpECb\",\n  \"vE2nWMqdkibL3EZR\",\n  \"vHOx4WpVss6Mn7hm\"\n];\n\nreturn $input.all().filter(item => allowedWorkflowIds.includes(item.json.id));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -736,6 +736,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-09-19T04:48:07.947Z",
-  "versionId": "3e9c049d-90be-4c8e-a771-538e795f8377"
+  "updatedAt": "2026-09-19T05:30:53.383Z",
+  "versionId": "fc29d7fb-2bee-40b1-89b7-63b1a487f323"
 }
