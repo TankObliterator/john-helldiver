@@ -1,0 +1,813 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "14752830-c450-43c0-acee-b6cf15f5b6a2",
+    "workflowId": "vE2nWMqdkibL3EZR",
+    "nodes": [
+      {
+        "parameters": {
+          "resource": "message",
+          "guildId": {
+            "__rl": true,
+            "value": "={{ $('/restart lobby').item.json.guildId }}",
+            "mode": "id"
+          },
+          "channelId": {
+            "__rl": true,
+            "value": "={{ $('/restart lobby').item.json.channelId }}",
+            "mode": "id"
+          },
+          "content": "=The Lobby is now back online!\n<@{{ $('/restart lobby').item.json.userId }}>",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          1264,
+          320
+        ],
+        "id": "288cda81-6133-49b3-8022-ff979aa49fcc",
+        "name": "back up notify",
+        "webhookId": "6a3c6643-e99e-4130-9332-6e5955cb7d41",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "=<@{{ $('/restart lobby').item.json.userId }}> Has initiated a `Lobby` Reboot.\nThis should not take more than a minute.",
+          "replyPayloadMode": "raw-json",
+          "useInputInteractionData": false,
+          "interactionId": "={{ $('/restart lobby').item.json.interactionId }}",
+          "interactionToken": "={{ $('/restart lobby').item.json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          880,
+          -112
+        ],
+        "id": "69ec5690-940d-4e8b-9d26-da0fd6cf42f2",
+        "name": "update request",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+                "leftValue": "={{ $json.data.running }}",
+                "rightValue": false,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          688,
+          96
+        ],
+        "id": "4737555f-1012-46a4-b23e-24e0a9801f08",
+        "name": "Is stopped?"
+      },
+      {
+        "parameters": {
+          "amount": 1
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          576,
+          320
+        ],
+        "id": "0885f56b-e7e4-4237-82f7-60c2d827f14c",
+        "name": "1 sec delay",
+        "webhookId": "e0f9ceaf-6414-44d1-8406-1191cdcde50c"
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          960,
+          320
+        ],
+        "id": "6d07d25e-bd20-4155-b954-39cb4eef69e6",
+        "name": "3 sec delay",
+        "webhookId": "1cf18bf8-c253-466f-bdb5-386bb585dde7"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+                "leftValue": "={{ $json.data.running }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1056,
+          96
+        ],
+        "id": "2d4f1fe7-dc24-4250-b92a-d8aa5bea6020",
+        "name": "Is running?"
+      },
+      {
+        "parameters": {
+          "url": "https://192.168.1.5:8443/api/v2/servers/b5047dc4-a059-4846-876b-12697f236a5f/stats",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          528,
+          96
+        ],
+        "id": "400cead2-c5ca-4836-aa61-9981faa529a7",
+        "name": "check status",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "7rDbtYjmIAaIo4sa",
+            "name": "Light Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://192.168.1.5:8443/api/v2/servers/b5047dc4-a059-4846-876b-12697f236a5f/stats",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          896,
+          96
+        ],
+        "id": "8b306ddc-45d3-43ba-ac66-a581939fb7d3",
+        "name": "check status1",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "7rDbtYjmIAaIo4sa",
+            "name": "Light Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          512,
+          -112
+        ],
+        "id": "ac542a62-76c8-4153-91dd-db3f9bbedced",
+        "name": "/restart lobby"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://192.168.1.5:8443/api/v2/servers/b5047dc4-a059-4846-876b-12697f236a5f/action/restart_server",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          688,
+          -112
+        ],
+        "id": "cb4b45c6-c9e4-4532-bc24-e0f7b3a41287",
+        "name": "restart server",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "7rDbtYjmIAaIo4sa",
+            "name": "Light Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 25
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1248,
+          80
+        ],
+        "id": "3bff16e9-4415-4dbf-aad0-936f3ef7afb0",
+        "name": "25 sec delay",
+        "webhookId": "882c1fe0-b0be-4572-9d3c-9eeff42babc2"
+      }
+    ],
+    "connections": {
+      "back up notify": {
+        "main": [
+          []
+        ]
+      },
+      "update request": {
+        "main": [
+          [
+            {
+              "node": "check status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is stopped?": {
+        "main": [
+          [
+            {
+              "node": "check status1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "1 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "1 sec delay": {
+        "main": [
+          [
+            {
+              "node": "check status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "3 sec delay": {
+        "main": [
+          [
+            {
+              "node": "check status1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is running?": {
+        "main": [
+          [
+            {
+              "node": "25 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "3 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check status": {
+        "main": [
+          [
+            {
+              "node": "Is stopped?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check status1": {
+        "main": [
+          [
+            {
+              "node": "Is running?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "/restart lobby": {
+        "main": [
+          [
+            {
+              "node": "restart server",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "restart server": {
+        "main": [
+          [
+            {
+              "node": "update request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "25 sec delay": {
+        "main": [
+          [
+            {
+              "node": "back up notify",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version 14752830",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-06-27T13:04:05.395Z",
+    "updatedAt": "2026-06-27T13:04:07.377Z"
+  },
+  "activeVersionId": "14752830-c450-43c0-acee-b6cf15f5b6a2",
+  "connections": {
+    "back up notify": {
+      "main": [
+        []
+      ]
+    },
+    "update request": {
+      "main": [
+        [
+          {
+            "node": "check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is stopped?": {
+      "main": [
+        [
+          {
+            "node": "check status1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "1 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 sec delay": {
+      "main": [
+        [
+          {
+            "node": "check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3 sec delay": {
+      "main": [
+        [
+          {
+            "node": "check status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is running?": {
+      "main": [
+        [
+          {
+            "node": "25 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "3 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check status": {
+      "main": [
+        [
+          {
+            "node": "Is stopped?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check status1": {
+      "main": [
+        [
+          {
+            "node": "Is running?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "/restart lobby": {
+      "main": [
+        [
+          {
+            "node": "restart server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "restart server": {
+      "main": [
+        [
+          {
+            "node": "update request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "25 sec delay": {
+      "main": [
+        [
+          {
+            "node": "back up notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-22T14:06:32.286Z",
+  "id": "vE2nWMqdkibL3EZR",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Lobby",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('/restart lobby').item.json.guildId }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('/restart lobby').item.json.channelId }}",
+          "mode": "id"
+        },
+        "content": "=The Lobby is now back online!\n<@{{ $('/restart lobby').item.json.userId }}>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        320
+      ],
+      "id": "288cda81-6133-49b3-8022-ff979aa49fcc",
+      "name": "back up notify",
+      "webhookId": "6a3c6643-e99e-4130-9332-6e5955cb7d41",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "=<@{{ $('/restart lobby').item.json.userId }}> Has initiated a `Lobby` Reboot.\nThis should not take more than a minute.",
+        "replyPayloadMode": "raw-json",
+        "useInputInteractionData": false,
+        "interactionId": "={{ $('/restart lobby').item.json.interactionId }}",
+        "interactionToken": "={{ $('/restart lobby').item.json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -112
+      ],
+      "id": "69ec5690-940d-4e8b-9d26-da0fd6cf42f2",
+      "name": "update request",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+              "leftValue": "={{ $json.data.running }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        688,
+        96
+      ],
+      "id": "4737555f-1012-46a4-b23e-24e0a9801f08",
+      "name": "Is stopped?"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        576,
+        320
+      ],
+      "id": "0885f56b-e7e4-4237-82f7-60c2d827f14c",
+      "name": "1 sec delay",
+      "webhookId": "e0f9ceaf-6414-44d1-8406-1191cdcde50c"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        320
+      ],
+      "id": "6d07d25e-bd20-4155-b954-39cb4eef69e6",
+      "name": "3 sec delay",
+      "webhookId": "1cf18bf8-c253-466f-bdb5-386bb585dde7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+              "leftValue": "={{ $json.data.running }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1056,
+        96
+      ],
+      "id": "2d4f1fe7-dc24-4250-b92a-d8aa5bea6020",
+      "name": "Is running?"
+    },
+    {
+      "parameters": {
+        "url": "https://192.168.1.5:8443/api/v2/servers/b5047dc4-a059-4846-876b-12697f236a5f/stats",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        528,
+        96
+      ],
+      "id": "400cead2-c5ca-4836-aa61-9981faa529a7",
+      "name": "check status",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7rDbtYjmIAaIo4sa",
+          "name": "Light Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://192.168.1.5:8443/api/v2/servers/b5047dc4-a059-4846-876b-12697f236a5f/stats",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        896,
+        96
+      ],
+      "id": "8b306ddc-45d3-43ba-ac66-a581939fb7d3",
+      "name": "check status1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7rDbtYjmIAaIo4sa",
+          "name": "Light Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        512,
+        -112
+      ],
+      "id": "ac542a62-76c8-4153-91dd-db3f9bbedced",
+      "name": "/restart lobby"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://192.168.1.5:8443/api/v2/servers/b5047dc4-a059-4846-876b-12697f236a5f/action/restart_server",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        688,
+        -112
+      ],
+      "id": "cb4b45c6-c9e4-4532-bc24-e0f7b3a41287",
+      "name": "restart server",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7rDbtYjmIAaIo4sa",
+          "name": "Light Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 25
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1248,
+        80
+      ],
+      "id": "3bff16e9-4415-4dbf-aad0-936f3ef7afb0",
+      "name": "25 sec delay",
+      "webhookId": "882c1fe0-b0be-4572-9d3c-9eeff42babc2"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1,
+    "timezone": "America/Denver",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "vE2nWMqdkibL3EZR",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-06-22T14:06:32.286Z",
+      "updatedAt": "2026-06-22T14:06:32.286Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-06-27T13:04:05.393Z",
+  "versionId": "14752830-c450-43c0-acee-b6cf15f5b6a2"
+}
