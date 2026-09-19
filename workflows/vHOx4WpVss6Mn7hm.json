@@ -1,0 +1,2126 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "d1714c16-2360-4d8b-80bc-561cbf944d8d",
+    "workflowId": "vHOx4WpVss6Mn7hm",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "register-context-menu-command",
+          "contextMenuCommandType": "message",
+          "contextMenuCommandName": "Add Reaction",
+          "contextMenuCommandGuildId": "1315632863437131819"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          944,
+          -32
+        ],
+        "id": "c73c6c9a-f852-4933-b67d-97611817decb",
+        "name": "register add",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "register-context-menu-command",
+          "contextMenuCommandType": "message",
+          "contextMenuCommandName": "Remove Reaction",
+          "contextMenuCommandGuildId": "1315632863437131819"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          944,
+          288
+        ],
+        "id": "643a1411-e6d7-49f1-a344-c8233e7bf878",
+        "name": "register remove",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "event": "context-menu-command",
+          "guildIds": [
+            "1315632863437131819",
+            "1199140895937810473"
+          ],
+          "contextMenuCommandName": "Add Reaction",
+          "contextMenuCommandType": "message",
+          "additionalFields": {
+            "autoAcknowledge": false,
+            "ackEphemeral": false
+          }
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          -32
+        ],
+        "id": "8332f4de-c1c8-497a-9263-d74ed6411fbf",
+        "name": "start reaction add",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "event": "modal-submit",
+          "guildIds": [
+            "1199140895937810473",
+            "1315632863437131819"
+          ],
+          "customId": "emoji-add",
+          "additionalFields": {
+            "ackEphemeral": true
+          }
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          128
+        ],
+        "id": "1dac6f59-d7ed-45d1-b625-2577d602a2a3",
+        "name": "finish reaction add",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const standardEmojiMap = $('get emoji').first().json;\n// Extract all custom emoji items into a single array\nconst customEmojiList = $('get custom emoji').all().map(item => item.json);\nconst rawInput = $('finish reaction add').item.json.fields[0].value.trim();\n\nconst cleanKey = rawInput.replace(/^:|:$/g, '').trim().toLowerCase();\nlet formattedEmoji = rawInput;\n\n// 1. Standard Unicode shortcode (:skull: -> 💀)\nif (standardEmojiMap && standardEmojiMap[cleanKey]) {\n  formattedEmoji = standardEmojiMap[cleanKey];\n} \n// 2. Raw custom emoji paste (<:Irrenarr:1393810618762526733> -> Irrenarr:1393810618762526733)\nelse if (/^<a?:[^:]+:\\d+>$/.test(rawInput)) {\n  formattedEmoji = rawInput.replace(/^<a?:([^:]+:\\d+)>$/, '$1');\n}\n// 3. Typed server custom shortcode (:Irrenarr: -> Irrenarr:1393810618762526733)\nelse if (Array.isArray(customEmojiList) && customEmojiList.length > 0) {\n  const match = customEmojiList.find(e => e.name && e.name.toLowerCase() === cleanKey);\n  if (match) {\n    formattedEmoji = `${match.name}:${match.id}`;\n  }\n}\n\nreturn [{ json: { formattedEmoji } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          576,
+          128
+        ],
+        "id": "b08215bd-f1ed-44a6-b1a1-c59f6cc6423f",
+        "name": "parse emoji"
+      },
+      {
+        "parameters": {
+          "url": "=https://discord.com/api/v10/guilds/{{ $('finish reaction add').item.json.guildId }}/emojis",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "discordBotApi",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          432,
+          128
+        ],
+        "id": "b9323769-f979-43e7-b2de-5783b7c7cd47",
+        "name": "get custom emoji",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://cdn.jsdelivr.net/npm/node-emoji@1.11.0/lib/emoji.json",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          288,
+          128
+        ],
+        "id": "ae951125-13ae-4a15-9f91-89fc98b71c12",
+        "name": "get emoji"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "value": "yjGo4WteWKKvTKgS",
+            "mode": "list",
+            "cachedResultName": "John Helldiver Reactions",
+            "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/yjGo4WteWKKvTKgS"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "isNotEmpty"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "add_id": "={{ $('start reaction add').item.json.targetMessageId }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "add_id",
+                "displayName": "add_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "remove_id",
+                "displayName": "remove_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          496,
+          -32
+        ],
+        "id": "7beb3dfa-7feb-4b53-a266-6c499077cde1",
+        "name": "save add msg id"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "yjGo4WteWKKvTKgS",
+            "mode": "list",
+            "cachedResultName": "John Helldiver Reactions",
+            "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/yjGo4WteWKKvTKgS"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "isNotEmpty"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          160,
+          128
+        ],
+        "id": "f539d21e-af4b-4837-8f27-4d8a6774f34f",
+        "name": "get add msg id"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "ecbe6530-e836-4b96-a6ca-a7e20e03f4e2",
+                "leftValue": "={{ $json.memberRoleIds[1] }}",
+                "rightValue": "1319836328908689538",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              },
+              {
+                "id": "80e5a7b1-24e6-4efb-8042-02a252374ade",
+                "leftValue": "={{ $json.memberRoleIds[1] }}",
+                "rightValue": "1315639535043870751",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          144,
+          -32
+        ],
+        "id": "0733c665-004e-4670-907e-1e8e49439d5c",
+        "name": "admin?"
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "=<@{{ $('start reaction add').item.json.userId }}> seems to be poking arround where they shouldn't be.",
+          "replyEmbeds": {},
+          "replyComponents": {},
+          "useInputInteractionData": false,
+          "interactionId": "={{ $('start reaction add').item.json.interactionId }}",
+          "interactionToken": "={{ $('start reaction add').item.json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          784,
+          -16
+        ],
+        "id": "dd6afe3e-c5d4-4b85-a8eb-b2777144e9e4",
+        "name": "nuh uh",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "={{ $('start reaction add').item.json.userId }}",
+          "content": "Prepare for the 500KG rapidly descending above your current location.\nhttps://klipy.com/gifs/magic-word",
+          "embedBuilder": {
+            "embed": []
+          },
+          "mediaGalleryBuilder": {
+            "gallery": []
+          },
+          "fileBuilder": {
+            "file": []
+          }
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          640,
+          -16
+        ],
+        "id": "f5ea9a7b-d0bf-42ea-a11d-42c064bfb729",
+        "name": "nuh uh dm",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "message",
+          "operation": "react",
+          "guildId": {
+            "__rl": true,
+            "value": "={{ $('finish reaction add').item.json.guildId }}",
+            "mode": "id"
+          },
+          "channelId": {
+            "__rl": true,
+            "value": "={{ $('finish reaction add').item.json.channelId }}",
+            "mode": "id"
+          },
+          "messageId": "={{ $('get add msg id').item.json.add_id }}",
+          "emoji": "={{ $json.formattedEmoji }}"
+        },
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          720,
+          128
+        ],
+        "id": "d331cbd8-e120-4565-8c3f-2b41dc521703",
+        "name": "react",
+        "webhookId": "86a73c24-2a4f-4f5f-aeef-43895a2928d3",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "const standardEmojiMap = $('get emoji1').first().json;\n// Extract all custom emoji items into a single array\nconst customEmojiList = $('get custom emoji1').all().map(item => item.json);\nconst rawInput = $('finish reaction remove').item.json.fields[0].value.trim();\n\nconst cleanKey = rawInput.replace(/^:|:$/g, '').trim().toLowerCase();\nlet formattedEmoji = rawInput;\n\n// 1. Standard Unicode shortcode (:skull: -> 💀)\nif (standardEmojiMap && standardEmojiMap[cleanKey]) {\n  formattedEmoji = standardEmojiMap[cleanKey];\n} \n// 2. Raw custom emoji paste (<:Irrenarr:1393810618762526733> -> Irrenarr:1393810618762526733)\nelse if (/^<a?:[^:]+:\\d+>$/.test(rawInput)) {\n  formattedEmoji = rawInput.replace(/^<a?:([^:]+:\\d+)>$/, '$1');\n}\n// 3. Typed server custom shortcode (:Irrenarr: -> Irrenarr:1393810618762526733)\nelse if (Array.isArray(customEmojiList) && customEmojiList.length > 0) {\n  const match = customEmojiList.find(e => e.name && e.name.toLowerCase() === cleanKey);\n  if (match) {\n    formattedEmoji = `${match.name}:${match.id}`;\n  }\n}\n\nreturn [{ json: { formattedEmoji } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          576,
+          448
+        ],
+        "id": "9140bef7-6b34-4266-9e12-1a26660e90fa",
+        "name": "parse emoji1"
+      },
+      {
+        "parameters": {
+          "url": "=https://discord.com/api/v10/guilds/{{ $('finish reaction remove').item.json.guildId }}/emojis",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "discordBotApi",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          432,
+          448
+        ],
+        "id": "3348d31a-f04c-48af-bb8e-ad9223d5fc60",
+        "name": "get custom emoji1",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://cdn.jsdelivr.net/npm/node-emoji@1.11.0/lib/emoji.json",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          288,
+          448
+        ],
+        "id": "93c89d74-45f0-434b-b722-411da845031f",
+        "name": "get emoji1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "ecbe6530-e836-4b96-a6ca-a7e20e03f4e2",
+                "leftValue": "={{ $json.memberRoleIds[1] }}",
+                "rightValue": "1319836328908689538",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              },
+              {
+                "id": "80e5a7b1-24e6-4efb-8042-02a252374ade",
+                "leftValue": "={{ $json.memberRoleIds[1] }}",
+                "rightValue": "1315639535043870751",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          144,
+          288
+        ],
+        "id": "1721ff05-ab5d-4630-9db8-7c8fd35ec38e",
+        "name": "admin?1"
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "=<@{{ $('start reaction remove').item.json.userId }}> seems to be poking arround where they shouldn't be.",
+          "replyEmbeds": {},
+          "replyComponents": {},
+          "useInputInteractionData": false,
+          "interactionId": "={{ $('start reaction remove').item.json.interactionId }}",
+          "interactionToken": "={{ $('start reaction remove').item.json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          784,
+          304
+        ],
+        "id": "115d9fd7-3d82-43ac-8686-2bc542f67445",
+        "name": "nuh uh1",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "={{ $('start reaction remove').item.json.userId }}",
+          "content": "Prepare for the 500KG rapidly descending above your current location.\nhttps://klipy.com/gifs/magic-word",
+          "embedBuilder": {
+            "embed": []
+          },
+          "mediaGalleryBuilder": {
+            "gallery": []
+          },
+          "fileBuilder": {
+            "file": []
+          }
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          640,
+          304
+        ],
+        "id": "ef5ea05a-dac8-48b5-b169-5e893b2b572e",
+        "name": "nuh uh dm1",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "event": "context-menu-command",
+          "guildIds": [
+            "1315632863437131819",
+            "1199140895937810473"
+          ],
+          "contextMenuCommandName": "Remove Reaction",
+          "contextMenuCommandType": "message",
+          "additionalFields": {
+            "autoAcknowledge": false,
+            "ackEphemeral": false
+          }
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          288
+        ],
+        "id": "dfca3e48-4779-4374-ac76-79790771228a",
+        "name": "start reaction remove",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "event": "modal-submit",
+          "guildIds": [
+            "1199140895937810473",
+            "1315632863437131819"
+          ],
+          "customId": "emoji-remove",
+          "additionalFields": {
+            "ackEphemeral": true
+          }
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          448
+        ],
+        "id": "f10cb8b6-ecc1-4076-87c6-7229d1d00d83",
+        "name": "finish reaction remove",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "yjGo4WteWKKvTKgS",
+            "mode": "list",
+            "cachedResultName": "John Helldiver Reactions",
+            "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/yjGo4WteWKKvTKgS"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "isNotEmpty"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          160,
+          448
+        ],
+        "id": "1a0e5667-7618-4120-8418-babb8195cd74",
+        "name": "get remove msg id"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "value": "yjGo4WteWKKvTKgS",
+            "mode": "list",
+            "cachedResultName": "John Helldiver Reactions",
+            "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/yjGo4WteWKKvTKgS"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "isNotEmpty"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "remove_id": "={{ $('start reaction remove').item.json.targetMessageId }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "add_id",
+                "displayName": "add_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "remove_id",
+                "displayName": "remove_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          496,
+          288
+        ],
+        "id": "5ba0d2a6-aaa2-4e8c-9bb3-2da29d5f97e0",
+        "name": "save remove msg id"
+      },
+      {
+        "parameters": {
+          "operation": "send-modal",
+          "modalUseInputData": false,
+          "modalInteractionId": "={{ $json.interactionId }}",
+          "modalInteractionToken": "={{ $json.interactionToken }}",
+          "modalCustomId": "=emoji-remove",
+          "modalTitle": "Paste your Emoji Here:",
+          "modalInputs": {
+            "input": [
+              {
+                "customId": "=emoji-remove-input",
+                "label": "(only supports official & Bomb Squad emojis)",
+                "minLength": 1
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          320,
+          288
+        ],
+        "id": "e2aba5ee-6be7-4f53-a6f2-c4fdc49d2e84",
+        "name": "send emoji remove box",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "send-modal",
+          "modalUseInputData": false,
+          "modalInteractionId": "={{ $json.interactionId }}",
+          "modalInteractionToken": "={{ $json.interactionToken }}",
+          "modalCustomId": "=emoji-add",
+          "modalTitle": "Paste your Emoji Here:",
+          "modalInputs": {
+            "input": [
+              {
+                "customId": "=emoji-add-input",
+                "label": "(only supports official & Bomb Squad emojis)",
+                "minLength": 1
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          320,
+          -32
+        ],
+        "id": "a8626991-1930-440f-8d63-61e719517aed",
+        "name": "send emoji add box",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "remove-own-reaction",
+          "msgOpGuildIds": "={{ $('finish reaction remove').item.json.guildId }}",
+          "msgOpChannelId": "={{ $('finish reaction remove').item.json.channelId }}",
+          "msgOpMessageId": "={{ $('get remove msg id').item.json.remove_id }}",
+          "reactionEmoji": "={{ $json.formattedEmoji }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          720,
+          448
+        ],
+        "id": "1969b24c-19b4-4a97-ba45-5a38fe241f28",
+        "name": "remove react",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "=Reaction removed. (Assuming you pasted it correctly)",
+          "replyEmbeds": {},
+          "replyComponents": {},
+          "ephemeral": true,
+          "useInputInteractionData": false,
+          "interactionId": "={{ $('finish reaction remove').item.json.interactionId }}",
+          "interactionToken": "={{ $('finish reaction remove').item.json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          864,
+          448
+        ],
+        "id": "ef9efb4f-279f-43f8-aa19-9306ff6a505b",
+        "name": "mark remove done",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "=Reaction added. (Assuming you pasted it correctly)",
+          "replyEmbeds": {},
+          "replyComponents": {},
+          "ephemeral": true,
+          "useInputInteractionData": false,
+          "interactionId": "={{ $('finish reaction add').item.json.interactionId }}",
+          "interactionToken": "={{ $('finish reaction add').item.json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          864,
+          128
+        ],
+        "id": "1c04c285-1e87-4feb-b8c1-da3c94087be6",
+        "name": "mark add done",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "start reaction add": {
+        "main": [
+          [
+            {
+              "node": "admin?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "finish reaction add": {
+        "main": [
+          [
+            {
+              "node": "get add msg id",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "parse emoji": {
+        "main": [
+          [
+            {
+              "node": "react",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get emoji": {
+        "main": [
+          [
+            {
+              "node": "get custom emoji",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get custom emoji": {
+        "main": [
+          [
+            {
+              "node": "parse emoji",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "save add msg id": {
+        "main": [
+          []
+        ]
+      },
+      "get add msg id": {
+        "main": [
+          [
+            {
+              "node": "get emoji",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "admin?": {
+        "main": [
+          [
+            {
+              "node": "send emoji add box",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "nuh uh dm",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "nuh uh dm": {
+        "main": [
+          [
+            {
+              "node": "nuh uh",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "react": {
+        "main": [
+          [
+            {
+              "node": "mark add done",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      },
+      "parse emoji1": {
+        "main": [
+          [
+            {
+              "node": "remove react",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get custom emoji1": {
+        "main": [
+          [
+            {
+              "node": "parse emoji1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get emoji1": {
+        "main": [
+          [
+            {
+              "node": "get custom emoji1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "admin?1": {
+        "main": [
+          [
+            {
+              "node": "send emoji remove box",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "nuh uh dm1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "nuh uh dm1": {
+        "main": [
+          [
+            {
+              "node": "nuh uh1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "start reaction remove": {
+        "main": [
+          [
+            {
+              "node": "admin?1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "finish reaction remove": {
+        "main": [
+          [
+            {
+              "node": "get remove msg id",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get remove msg id": {
+        "main": [
+          [
+            {
+              "node": "get emoji1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "send emoji remove box": {
+        "main": [
+          [
+            {
+              "node": "save remove msg id",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "send emoji add box": {
+        "main": [
+          [
+            {
+              "node": "save add msg id",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "remove react": {
+        "main": [
+          [
+            {
+              "node": "mark remove done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version d1714c16",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-09-19T03:51:19.608Z",
+    "updatedAt": "2026-09-19T03:51:23.156Z"
+  },
+  "activeVersionId": "d1714c16-2360-4d8b-80bc-561cbf944d8d",
+  "connections": {
+    "start reaction add": {
+      "main": [
+        [
+          {
+            "node": "admin?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "finish reaction add": {
+      "main": [
+        [
+          {
+            "node": "get add msg id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse emoji": {
+      "main": [
+        [
+          {
+            "node": "react",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get emoji": {
+      "main": [
+        [
+          {
+            "node": "get custom emoji",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get custom emoji": {
+      "main": [
+        [
+          {
+            "node": "parse emoji",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save add msg id": {
+      "main": [
+        []
+      ]
+    },
+    "get add msg id": {
+      "main": [
+        [
+          {
+            "node": "get emoji",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "admin?": {
+      "main": [
+        [
+          {
+            "node": "send emoji add box",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "nuh uh dm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "nuh uh dm": {
+      "main": [
+        [
+          {
+            "node": "nuh uh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "react": {
+      "main": [
+        [
+          {
+            "node": "mark add done",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "parse emoji1": {
+      "main": [
+        [
+          {
+            "node": "remove react",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get custom emoji1": {
+      "main": [
+        [
+          {
+            "node": "parse emoji1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get emoji1": {
+      "main": [
+        [
+          {
+            "node": "get custom emoji1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "admin?1": {
+      "main": [
+        [
+          {
+            "node": "send emoji remove box",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "nuh uh dm1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "nuh uh dm1": {
+      "main": [
+        [
+          {
+            "node": "nuh uh1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "start reaction remove": {
+      "main": [
+        [
+          {
+            "node": "admin?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "finish reaction remove": {
+      "main": [
+        [
+          {
+            "node": "get remove msg id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get remove msg id": {
+      "main": [
+        [
+          {
+            "node": "get emoji1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send emoji remove box": {
+      "main": [
+        [
+          {
+            "node": "save remove msg id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send emoji add box": {
+      "main": [
+        [
+          {
+            "node": "save add msg id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "remove react": {
+      "main": [
+        [
+          {
+            "node": "mark remove done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-09-16T21:52:52.026Z",
+  "id": "vHOx4WpVss6Mn7hm",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Right Click Reactions",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "register-context-menu-command",
+        "contextMenuCommandType": "message",
+        "contextMenuCommandName": "Add Reaction",
+        "contextMenuCommandGuildId": "1315632863437131819"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        944,
+        -32
+      ],
+      "id": "c73c6c9a-f852-4933-b67d-97611817decb",
+      "name": "register add",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "register-context-menu-command",
+        "contextMenuCommandType": "message",
+        "contextMenuCommandName": "Remove Reaction",
+        "contextMenuCommandGuildId": "1315632863437131819"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        944,
+        288
+      ],
+      "id": "643a1411-e6d7-49f1-a344-c8233e7bf878",
+      "name": "register remove",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "event": "context-menu-command",
+        "guildIds": [
+          "1315632863437131819",
+          "1199140895937810473"
+        ],
+        "contextMenuCommandName": "Add Reaction",
+        "contextMenuCommandType": "message",
+        "additionalFields": {
+          "autoAcknowledge": false,
+          "ackEphemeral": false
+        }
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -32
+      ],
+      "id": "8332f4de-c1c8-497a-9263-d74ed6411fbf",
+      "name": "start reaction add",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "event": "modal-submit",
+        "guildIds": [
+          "1199140895937810473",
+          "1315632863437131819"
+        ],
+        "customId": "emoji-add",
+        "additionalFields": {
+          "ackEphemeral": true
+        }
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        128
+      ],
+      "id": "1dac6f59-d7ed-45d1-b625-2577d602a2a3",
+      "name": "finish reaction add",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const standardEmojiMap = $('get emoji').first().json;\n// Extract all custom emoji items into a single array\nconst customEmojiList = $('get custom emoji').all().map(item => item.json);\nconst rawInput = $('finish reaction add').item.json.fields[0].value.trim();\n\nconst cleanKey = rawInput.replace(/^:|:$/g, '').trim().toLowerCase();\nlet formattedEmoji = rawInput;\n\n// 1. Standard Unicode shortcode (:skull: -> 💀)\nif (standardEmojiMap && standardEmojiMap[cleanKey]) {\n  formattedEmoji = standardEmojiMap[cleanKey];\n} \n// 2. Raw custom emoji paste (<:Irrenarr:1393810618762526733> -> Irrenarr:1393810618762526733)\nelse if (/^<a?:[^:]+:\\d+>$/.test(rawInput)) {\n  formattedEmoji = rawInput.replace(/^<a?:([^:]+:\\d+)>$/, '$1');\n}\n// 3. Typed server custom shortcode (:Irrenarr: -> Irrenarr:1393810618762526733)\nelse if (Array.isArray(customEmojiList) && customEmojiList.length > 0) {\n  const match = customEmojiList.find(e => e.name && e.name.toLowerCase() === cleanKey);\n  if (match) {\n    formattedEmoji = `${match.name}:${match.id}`;\n  }\n}\n\nreturn [{ json: { formattedEmoji } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        128
+      ],
+      "id": "b08215bd-f1ed-44a6-b1a1-c59f6cc6423f",
+      "name": "parse emoji"
+    },
+    {
+      "parameters": {
+        "url": "=https://discord.com/api/v10/guilds/{{ $('finish reaction add').item.json.guildId }}/emojis",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "discordBotApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        432,
+        128
+      ],
+      "id": "b9323769-f979-43e7-b2de-5783b7c7cd47",
+      "name": "get custom emoji",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://cdn.jsdelivr.net/npm/node-emoji@1.11.0/lib/emoji.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        288,
+        128
+      ],
+      "id": "ae951125-13ae-4a15-9f91-89fc98b71c12",
+      "name": "get emoji"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "yjGo4WteWKKvTKgS",
+          "mode": "list",
+          "cachedResultName": "John Helldiver Reactions",
+          "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/yjGo4WteWKKvTKgS"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "add_id": "={{ $('start reaction add').item.json.targetMessageId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "add_id",
+              "displayName": "add_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "remove_id",
+              "displayName": "remove_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        496,
+        -32
+      ],
+      "id": "7beb3dfa-7feb-4b53-a266-6c499077cde1",
+      "name": "save add msg id"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "yjGo4WteWKKvTKgS",
+          "mode": "list",
+          "cachedResultName": "John Helldiver Reactions",
+          "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/yjGo4WteWKKvTKgS"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        128
+      ],
+      "id": "f539d21e-af4b-4837-8f27-4d8a6774f34f",
+      "name": "get add msg id"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ecbe6530-e836-4b96-a6ca-a7e20e03f4e2",
+              "leftValue": "={{ $json.memberRoleIds[1] }}",
+              "rightValue": "1319836328908689538",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "80e5a7b1-24e6-4efb-8042-02a252374ade",
+              "leftValue": "={{ $json.memberRoleIds[1] }}",
+              "rightValue": "1315639535043870751",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        144,
+        -32
+      ],
+      "id": "0733c665-004e-4670-907e-1e8e49439d5c",
+      "name": "admin?"
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "=<@{{ $('start reaction add').item.json.userId }}> seems to be poking arround where they shouldn't be.",
+        "replyEmbeds": {},
+        "replyComponents": {},
+        "useInputInteractionData": false,
+        "interactionId": "={{ $('start reaction add').item.json.interactionId }}",
+        "interactionToken": "={{ $('start reaction add').item.json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        784,
+        -16
+      ],
+      "id": "dd6afe3e-c5d4-4b85-a8eb-b2777144e9e4",
+      "name": "nuh uh",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "={{ $('start reaction add').item.json.userId }}",
+        "content": "Prepare for the 500KG rapidly descending above your current location.\nhttps://klipy.com/gifs/magic-word",
+        "embedBuilder": {
+          "embed": []
+        },
+        "mediaGalleryBuilder": {
+          "gallery": []
+        },
+        "fileBuilder": {
+          "file": []
+        }
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -16
+      ],
+      "id": "f5ea9a7b-d0bf-42ea-a11d-42c064bfb729",
+      "name": "nuh uh dm",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "react",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('finish reaction add').item.json.guildId }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('finish reaction add').item.json.channelId }}",
+          "mode": "id"
+        },
+        "messageId": "={{ $('get add msg id').item.json.add_id }}",
+        "emoji": "={{ $json.formattedEmoji }}"
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        720,
+        128
+      ],
+      "id": "d331cbd8-e120-4565-8c3f-2b41dc521703",
+      "name": "react",
+      "webhookId": "86a73c24-2a4f-4f5f-aeef-43895a2928d3",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const standardEmojiMap = $('get emoji1').first().json;\n// Extract all custom emoji items into a single array\nconst customEmojiList = $('get custom emoji1').all().map(item => item.json);\nconst rawInput = $('finish reaction remove').item.json.fields[0].value.trim();\n\nconst cleanKey = rawInput.replace(/^:|:$/g, '').trim().toLowerCase();\nlet formattedEmoji = rawInput;\n\n// 1. Standard Unicode shortcode (:skull: -> 💀)\nif (standardEmojiMap && standardEmojiMap[cleanKey]) {\n  formattedEmoji = standardEmojiMap[cleanKey];\n} \n// 2. Raw custom emoji paste (<:Irrenarr:1393810618762526733> -> Irrenarr:1393810618762526733)\nelse if (/^<a?:[^:]+:\\d+>$/.test(rawInput)) {\n  formattedEmoji = rawInput.replace(/^<a?:([^:]+:\\d+)>$/, '$1');\n}\n// 3. Typed server custom shortcode (:Irrenarr: -> Irrenarr:1393810618762526733)\nelse if (Array.isArray(customEmojiList) && customEmojiList.length > 0) {\n  const match = customEmojiList.find(e => e.name && e.name.toLowerCase() === cleanKey);\n  if (match) {\n    formattedEmoji = `${match.name}:${match.id}`;\n  }\n}\n\nreturn [{ json: { formattedEmoji } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        448
+      ],
+      "id": "9140bef7-6b34-4266-9e12-1a26660e90fa",
+      "name": "parse emoji1"
+    },
+    {
+      "parameters": {
+        "url": "=https://discord.com/api/v10/guilds/{{ $('finish reaction remove').item.json.guildId }}/emojis",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "discordBotApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        432,
+        448
+      ],
+      "id": "3348d31a-f04c-48af-bb8e-ad9223d5fc60",
+      "name": "get custom emoji1",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://cdn.jsdelivr.net/npm/node-emoji@1.11.0/lib/emoji.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        288,
+        448
+      ],
+      "id": "93c89d74-45f0-434b-b722-411da845031f",
+      "name": "get emoji1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ecbe6530-e836-4b96-a6ca-a7e20e03f4e2",
+              "leftValue": "={{ $json.memberRoleIds[1] }}",
+              "rightValue": "1319836328908689538",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "80e5a7b1-24e6-4efb-8042-02a252374ade",
+              "leftValue": "={{ $json.memberRoleIds[1] }}",
+              "rightValue": "1315639535043870751",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        144,
+        288
+      ],
+      "id": "1721ff05-ab5d-4630-9db8-7c8fd35ec38e",
+      "name": "admin?1"
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "=<@{{ $('start reaction remove').item.json.userId }}> seems to be poking arround where they shouldn't be.",
+        "replyEmbeds": {},
+        "replyComponents": {},
+        "useInputInteractionData": false,
+        "interactionId": "={{ $('start reaction remove').item.json.interactionId }}",
+        "interactionToken": "={{ $('start reaction remove').item.json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        784,
+        304
+      ],
+      "id": "115d9fd7-3d82-43ac-8686-2bc542f67445",
+      "name": "nuh uh1",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "={{ $('start reaction remove').item.json.userId }}",
+        "content": "Prepare for the 500KG rapidly descending above your current location.\nhttps://klipy.com/gifs/magic-word",
+        "embedBuilder": {
+          "embed": []
+        },
+        "mediaGalleryBuilder": {
+          "gallery": []
+        },
+        "fileBuilder": {
+          "file": []
+        }
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        640,
+        304
+      ],
+      "id": "ef5ea05a-dac8-48b5-b169-5e893b2b572e",
+      "name": "nuh uh dm1",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "event": "context-menu-command",
+        "guildIds": [
+          "1315632863437131819",
+          "1199140895937810473"
+        ],
+        "contextMenuCommandName": "Remove Reaction",
+        "contextMenuCommandType": "message",
+        "additionalFields": {
+          "autoAcknowledge": false,
+          "ackEphemeral": false
+        }
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        288
+      ],
+      "id": "dfca3e48-4779-4374-ac76-79790771228a",
+      "name": "start reaction remove",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "event": "modal-submit",
+        "guildIds": [
+          "1199140895937810473",
+          "1315632863437131819"
+        ],
+        "customId": "emoji-remove",
+        "additionalFields": {
+          "ackEphemeral": true
+        }
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        448
+      ],
+      "id": "f10cb8b6-ecc1-4076-87c6-7229d1d00d83",
+      "name": "finish reaction remove",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "yjGo4WteWKKvTKgS",
+          "mode": "list",
+          "cachedResultName": "John Helldiver Reactions",
+          "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/yjGo4WteWKKvTKgS"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        448
+      ],
+      "id": "1a0e5667-7618-4120-8418-babb8195cd74",
+      "name": "get remove msg id"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "yjGo4WteWKKvTKgS",
+          "mode": "list",
+          "cachedResultName": "John Helldiver Reactions",
+          "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/yjGo4WteWKKvTKgS"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "remove_id": "={{ $('start reaction remove').item.json.targetMessageId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "add_id",
+              "displayName": "add_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "remove_id",
+              "displayName": "remove_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        496,
+        288
+      ],
+      "id": "5ba0d2a6-aaa2-4e8c-9bb3-2da29d5f97e0",
+      "name": "save remove msg id"
+    },
+    {
+      "parameters": {
+        "operation": "send-modal",
+        "modalUseInputData": false,
+        "modalInteractionId": "={{ $json.interactionId }}",
+        "modalInteractionToken": "={{ $json.interactionToken }}",
+        "modalCustomId": "=emoji-remove",
+        "modalTitle": "Paste your Emoji Here:",
+        "modalInputs": {
+          "input": [
+            {
+              "customId": "=emoji-remove-input",
+              "label": "(only supports official & Bomb Squad emojis)",
+              "minLength": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        320,
+        288
+      ],
+      "id": "e2aba5ee-6be7-4f53-a6f2-c4fdc49d2e84",
+      "name": "send emoji remove box",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send-modal",
+        "modalUseInputData": false,
+        "modalInteractionId": "={{ $json.interactionId }}",
+        "modalInteractionToken": "={{ $json.interactionToken }}",
+        "modalCustomId": "=emoji-add",
+        "modalTitle": "Paste your Emoji Here:",
+        "modalInputs": {
+          "input": [
+            {
+              "customId": "=emoji-add-input",
+              "label": "(only supports official & Bomb Squad emojis)",
+              "minLength": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -32
+      ],
+      "id": "a8626991-1930-440f-8d63-61e719517aed",
+      "name": "send emoji add box",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "remove-own-reaction",
+        "msgOpGuildIds": "={{ $('finish reaction remove').item.json.guildId }}",
+        "msgOpChannelId": "={{ $('finish reaction remove').item.json.channelId }}",
+        "msgOpMessageId": "={{ $('get remove msg id').item.json.remove_id }}",
+        "reactionEmoji": "={{ $json.formattedEmoji }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        720,
+        448
+      ],
+      "id": "1969b24c-19b4-4a97-ba45-5a38fe241f28",
+      "name": "remove react",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "=Reaction removed. (Assuming you pasted it correctly)",
+        "replyEmbeds": {},
+        "replyComponents": {},
+        "ephemeral": true,
+        "useInputInteractionData": false,
+        "interactionId": "={{ $('finish reaction remove').item.json.interactionId }}",
+        "interactionToken": "={{ $('finish reaction remove').item.json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        864,
+        448
+      ],
+      "id": "ef9efb4f-279f-43f8-aa19-9306ff6a505b",
+      "name": "mark remove done",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "=Reaction added. (Assuming you pasted it correctly)",
+        "replyEmbeds": {},
+        "replyComponents": {},
+        "ephemeral": true,
+        "useInputInteractionData": false,
+        "interactionId": "={{ $('finish reaction add').item.json.interactionId }}",
+        "interactionToken": "={{ $('finish reaction add').item.json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        864,
+        128
+      ],
+      "id": "1c04c285-1e87-4feb-b8c1-da3c94087be6",
+      "name": "mark add done",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "vHOx4WpVss6Mn7hm",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-09-16T21:52:52.026Z",
+      "updatedAt": "2026-09-16T21:52:52.026Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 4,
+  "updatedAt": "2026-09-19T03:51:19.606Z",
+  "versionId": "d1714c16-2360-4d8b-80bc-561cbf944d8d"
+}
