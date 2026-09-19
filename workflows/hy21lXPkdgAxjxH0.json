@@ -1,0 +1,885 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "9a91ea24-5adc-4355-bc2a-91cc96c8979e",
+    "workflowId": "hy21lXPkdgAxjxH0",
+    "nodes": [
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          960,
+          320
+        ],
+        "id": "5356e6f9-8113-4e05-9c54-5412a81ba419",
+        "name": "3 sec delay",
+        "webhookId": "41a04c75-d9f8-4cfc-b820-b074055f1c23"
+      },
+      {
+        "parameters": {
+          "resource": "message",
+          "guildId": {
+            "__rl": true,
+            "value": "={{ $('/restart geyser').item.json.guildId }}",
+            "mode": "id"
+          },
+          "channelId": {
+            "__rl": true,
+            "value": "={{ $('/restart geyser').item.json.channelId }}",
+            "mode": "id"
+          },
+          "content": "=Geyser is now back online!\n<@{{ $('/restart geyser').item.json.userId }}>",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          1264,
+          320
+        ],
+        "id": "874f4cd6-4f30-488a-8a98-3dee7a3aa3b2",
+        "name": "back up notify",
+        "webhookId": "27b0920b-20c8-4532-82cc-4beefed19ada",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "respond-to-interaction",
+          "content": "=<@{{ $('/restart geyser').item.json.userId }}> Has initiated a `Geyser` Reboot/Update.\nThis should not take more than a minute.",
+          "replyPayloadMode": "raw-json",
+          "useInputInteractionData": false,
+          "interactionId": "={{ $('/restart geyser').item.json.interactionId }}",
+          "interactionToken": "={{ $('/restart geyser').item.json.interactionToken }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          -112
+        ],
+        "id": "e2a5b129-7045-4e7c-a487-a698a678229b",
+        "name": "update request",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          512,
+          -112
+        ],
+        "id": "e554b9be-7cb7-4f07-a512-dbe2df22a168",
+        "name": "/restart geyser"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://192.168.1.5:8443/api/v2/servers/1eebe5f5-254d-4086-94b2-7b996bf35a5c/action/update_executable",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          688,
+          -112
+        ],
+        "id": "7994ded4-af4c-4a6a-9db2-03aadd7f395e",
+        "name": "update geyser",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "7rDbtYjmIAaIo4sa",
+            "name": "Light Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://192.168.1.5:8443/api/v2/servers/8e071ed1-9df3-4af9-8b95-06ba6bfbbe0f/action/update_executable",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          880,
+          -112
+        ],
+        "id": "5d91d983-fac5-455e-a50b-bcc590c2cbba",
+        "name": "update broadcast",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "7rDbtYjmIAaIo4sa",
+            "name": "Light Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://192.168.1.5:8443/api/v2/servers/1eebe5f5-254d-4086-94b2-7b996bf35a5c/stats",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          528,
+          96
+        ],
+        "id": "e919ca64-e735-4b11-a19c-09a53e86be9c",
+        "name": "check status",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "7rDbtYjmIAaIo4sa",
+            "name": "Light Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+                "leftValue": "={{ $json.data.running }}",
+                "rightValue": false,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          688,
+          96
+        ],
+        "id": "f3edb6e0-41ff-41a8-bf1c-9165d87d96f7",
+        "name": "Is stopped?"
+      },
+      {
+        "parameters": {
+          "url": "https://192.168.1.5:8443/api/v2/servers/1eebe5f5-254d-4086-94b2-7b996bf35a5c/stats",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          896,
+          96
+        ],
+        "id": "0d4499b3-69a3-44ff-a17a-8f9fc70c6f75",
+        "name": "check status1",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "7rDbtYjmIAaIo4sa",
+            "name": "Light Crafty API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1248,
+          80
+        ],
+        "id": "c351a312-a310-4fa5-b5cb-b0a0cbbb43f4",
+        "name": "2 sec delay",
+        "webhookId": "4b312e6c-7a37-488b-8263-4c9aaeea5af3"
+      },
+      {
+        "parameters": {
+          "amount": 1
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          576,
+          320
+        ],
+        "id": "2fe9a719-1eb7-477a-a08b-59af4a2df1e4",
+        "name": "1 sec delay",
+        "webhookId": "e75772af-c87e-4bf7-8107-d7f30a8be0ad"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+                "leftValue": "={{ $json.data.running }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1056,
+          96
+        ],
+        "id": "53b82f3e-0932-4c56-8b32-5533216dcf30",
+        "name": "Is running?"
+      }
+    ],
+    "connections": {
+      "3 sec delay": {
+        "main": [
+          [
+            {
+              "node": "check status1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "back up notify": {
+        "main": [
+          []
+        ]
+      },
+      "update request": {
+        "main": [
+          [
+            {
+              "node": "check status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "/restart geyser": {
+        "main": [
+          [
+            {
+              "node": "update geyser",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "update geyser": {
+        "main": [
+          [
+            {
+              "node": "update broadcast",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "update broadcast": {
+        "main": [
+          [
+            {
+              "node": "update request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check status": {
+        "main": [
+          [
+            {
+              "node": "Is stopped?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is stopped?": {
+        "main": [
+          [
+            {
+              "node": "check status1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "1 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check status1": {
+        "main": [
+          [
+            {
+              "node": "Is running?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "2 sec delay": {
+        "main": [
+          [
+            {
+              "node": "back up notify",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "1 sec delay": {
+        "main": [
+          [
+            {
+              "node": "check status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is running?": {
+        "main": [
+          [
+            {
+              "node": "2 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "3 sec delay",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version 9a91ea24",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-06-27T13:01:41.201Z",
+    "updatedAt": "2026-06-27T13:01:43.237Z"
+  },
+  "activeVersionId": "9a91ea24-5adc-4355-bc2a-91cc96c8979e",
+  "connections": {
+    "3 sec delay": {
+      "main": [
+        [
+          {
+            "node": "check status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "back up notify": {
+      "main": [
+        []
+      ]
+    },
+    "update request": {
+      "main": [
+        [
+          {
+            "node": "check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "/restart geyser": {
+      "main": [
+        [
+          {
+            "node": "update geyser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update geyser": {
+      "main": [
+        [
+          {
+            "node": "update broadcast",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update broadcast": {
+      "main": [
+        [
+          {
+            "node": "update request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check status": {
+      "main": [
+        [
+          {
+            "node": "Is stopped?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is stopped?": {
+      "main": [
+        [
+          {
+            "node": "check status1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "1 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check status1": {
+      "main": [
+        [
+          {
+            "node": "Is running?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2 sec delay": {
+      "main": [
+        [
+          {
+            "node": "back up notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 sec delay": {
+      "main": [
+        [
+          {
+            "node": "check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is running?": {
+      "main": [
+        [
+          {
+            "node": "2 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "3 sec delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-05-15T09:53:44.218Z",
+  "id": "hy21lXPkdgAxjxH0",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Geyser",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        320
+      ],
+      "id": "5356e6f9-8113-4e05-9c54-5412a81ba419",
+      "name": "3 sec delay",
+      "webhookId": "41a04c75-d9f8-4cfc-b820-b074055f1c23"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('/restart geyser').item.json.guildId }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('/restart geyser').item.json.channelId }}",
+          "mode": "id"
+        },
+        "content": "=Geyser is now back online!\n<@{{ $('/restart geyser').item.json.userId }}>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        320
+      ],
+      "id": "874f4cd6-4f30-488a-8a98-3dee7a3aa3b2",
+      "name": "back up notify",
+      "webhookId": "27b0920b-20c8-4532-82cc-4beefed19ada",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "respond-to-interaction",
+        "content": "=<@{{ $('/restart geyser').item.json.userId }}> Has initiated a `Geyser` Reboot/Update.\nThis should not take more than a minute.",
+        "replyPayloadMode": "raw-json",
+        "useInputInteractionData": false,
+        "interactionId": "={{ $('/restart geyser').item.json.interactionId }}",
+        "interactionToken": "={{ $('/restart geyser').item.json.interactionToken }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        -112
+      ],
+      "id": "e2a5b129-7045-4e7c-a487-a698a678229b",
+      "name": "update request",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        512,
+        -112
+      ],
+      "id": "e554b9be-7cb7-4f07-a512-dbe2df22a168",
+      "name": "/restart geyser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://192.168.1.5:8443/api/v2/servers/1eebe5f5-254d-4086-94b2-7b996bf35a5c/action/update_executable",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        688,
+        -112
+      ],
+      "id": "7994ded4-af4c-4a6a-9db2-03aadd7f395e",
+      "name": "update geyser",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7rDbtYjmIAaIo4sa",
+          "name": "Light Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://192.168.1.5:8443/api/v2/servers/8e071ed1-9df3-4af9-8b95-06ba6bfbbe0f/action/update_executable",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        880,
+        -112
+      ],
+      "id": "5d91d983-fac5-455e-a50b-bcc590c2cbba",
+      "name": "update broadcast",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7rDbtYjmIAaIo4sa",
+          "name": "Light Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://192.168.1.5:8443/api/v2/servers/1eebe5f5-254d-4086-94b2-7b996bf35a5c/stats",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        528,
+        96
+      ],
+      "id": "e919ca64-e735-4b11-a19c-09a53e86be9c",
+      "name": "check status",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7rDbtYjmIAaIo4sa",
+          "name": "Light Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+              "leftValue": "={{ $json.data.running }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        688,
+        96
+      ],
+      "id": "f3edb6e0-41ff-41a8-bf1c-9165d87d96f7",
+      "name": "Is stopped?"
+    },
+    {
+      "parameters": {
+        "url": "https://192.168.1.5:8443/api/v2/servers/1eebe5f5-254d-4086-94b2-7b996bf35a5c/stats",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        896,
+        96
+      ],
+      "id": "0d4499b3-69a3-44ff-a17a-8f9fc70c6f75",
+      "name": "check status1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7rDbtYjmIAaIo4sa",
+          "name": "Light Crafty API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1248,
+        80
+      ],
+      "id": "c351a312-a310-4fa5-b5cb-b0a0cbbb43f4",
+      "name": "2 sec delay",
+      "webhookId": "4b312e6c-7a37-488b-8263-4c9aaeea5af3"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        576,
+        320
+      ],
+      "id": "2fe9a719-1eb7-477a-a08b-59af4a2df1e4",
+      "name": "1 sec delay",
+      "webhookId": "e75772af-c87e-4bf7-8107-d7f30a8be0ad"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b459d9d4-8984-4fc7-b6da-89774e6b18e4",
+              "leftValue": "={{ $json.data.running }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1056,
+        96
+      ],
+      "id": "53b82f3e-0932-4c56-8b32-5533216dcf30",
+      "name": "Is running?"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1,
+    "timezone": "America/Denver",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "hy21lXPkdgAxjxH0",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-05-15T09:53:44.218Z",
+      "updatedAt": "2026-05-15T09:53:44.218Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-06-27T13:01:41.198Z",
+  "versionId": "9a91ea24-5adc-4355-bc2a-91cc96c8979e"
+}
