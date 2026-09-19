@@ -1,0 +1,1624 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "ebc9b0b6-1889-481b-8206-3fd62c1f0fca",
+    "workflowId": "j9iRsQg7vkF9UL62",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "create-role",
+          "roleMgmtGuildId": "1315632863437131819",
+          "roleCreateName": "HD2-Vote-Ping",
+          "roleCreateFields": {}
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          -272,
+          0
+        ],
+        "id": "d1fdf671-9178-4ae7-b2c5-91303586be76",
+        "name": "create role",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "delete-role",
+          "roleMgmtGuildId": "1315632863437131819",
+          "roleMgmtRoleId": "={{ $json.role_id }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          -272,
+          416
+        ],
+        "id": "6983a94b-c4b5-4d71-840d-854cc6030a72",
+        "name": "delete role",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://discord.com/api/v10/guilds/1315632863437131819/roles/{{ $json.roleId }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "discordBotApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"permissions\": \"8\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          -128,
+          0
+        ],
+        "id": "0ccfdcaf-06ab-4c9d-9d09-db9ef1f15b28",
+        "name": "update perms",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "={{ $('activate').item.json.userId }}",
+          "content": "🟩 Emergency Admin Access Activated."
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          592,
+          0
+        ],
+        "id": "895265ef-1492-4dd1-99b8-faf1ffa08c77",
+        "name": "notify",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "add-role",
+          "memberGuildId": "1315632863437131819",
+          "memberUserId": "770786220283396106",
+          "memberRoleId": "={{ $('create role').item.json.roleId }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          16,
+          0
+        ],
+        "id": "773ff6c1-0ed2-4cd7-8abf-27373b0d4fb3",
+        "name": "assign role tank",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "event": "direct-message",
+          "pattern": "starts-with",
+          "patternValue": "activate",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          -352,
+          -192
+        ],
+        "id": "7c45b3de-5251-49c1-9eda-937f124e416e",
+        "name": "activate",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "event": "direct-message",
+          "pattern": "starts-with",
+          "patternValue": "deactivate",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          -352,
+          224
+        ],
+        "id": "7d6c6db1-d13e-489a-9f88-cb90061e5071",
+        "name": "deactivate",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "770786220283396106",
+          "content": "=🟩 {{ $('activate').item.json.userDisplayName }} Activated Emergency Admin Access."
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          736,
+          0
+        ],
+        "id": "7a01b4d2-8837-48d6-9f9a-1be2ff9a361b",
+        "name": "notify tank",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "4M8XHyQ7dJ7v1xXy",
+            "mode": "list",
+            "cachedResultName": "Bomb Squad Admin Role Backup",
+            "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/4M8XHyQ7dJ7v1xXy"
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          -208,
+          224
+        ],
+        "id": "0bc80127-8972-44ee-ab91-9a4e477b68e2",
+        "name": "get role id"
+      },
+      {
+        "parameters": {
+          "operation": "add-role",
+          "memberGuildId": "1315632863437131819",
+          "memberUserId": "788190569427501096",
+          "memberRoleId": "={{ $('create role').item.json.roleId }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          160,
+          0
+        ],
+        "id": "6637d774-d4d4-4397-bcbf-43e2eec9197e",
+        "name": "assign role chaos",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "add-role",
+          "memberGuildId": "1315632863437131819",
+          "memberUserId": "783276099697508352",
+          "memberRoleId": "={{ $('create role').item.json.roleId }}"
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          304,
+          0
+        ],
+        "id": "4a5357c6-635d-43f8-a253-99ca3af9bfc9",
+        "name": "assign role sane",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "={{ $('activate').item.json.userId }}",
+          "content": "🟦 Emergency Admin Access Already Activated."
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          160,
+          -176
+        ],
+        "id": "45c3ae8e-ba56-4de6-ad30-eb82b36162ef",
+        "name": "notify1",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "770786220283396106",
+          "content": "=🟦 {{ $('activate').item.json.userDisplayName }} Tried to Activate Emergency Admin Access."
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          304,
+          -176
+        ],
+        "id": "54d23082-9a7a-4897-9ec5-bad462d56426",
+        "name": "notify tank1",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "value": "4M8XHyQ7dJ7v1xXy",
+            "mode": "list",
+            "cachedResultName": "Bomb Squad Admin Role Backup",
+            "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/4M8XHyQ7dJ7v1xXy"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "current_status",
+                "condition": "isNotEmpty"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "current_status": "off"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "role_id",
+                "displayName": "role_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "current_status",
+                "displayName": "current_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          -128,
+          416
+        ],
+        "id": "0e75ca4e-14c8-4142-bdf7-9905247f2090",
+        "name": "set to off"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b07cccd3-c56d-487b-b427-bbb6c56ba684",
+                "leftValue": "={{ $json.current_status }}",
+                "rightValue": "off",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -64,
+          -192
+        ],
+        "id": "68ce8911-fd11-454b-aa39-cd77d13c8c7e",
+        "name": "is off?"
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "={{ $('deactivate').item.json.userId }}",
+          "content": "🟥 Emergency Admin Access Deactivated."
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          16,
+          416
+        ],
+        "id": "07b693cc-d6df-4a5e-a69e-329ddfd71d1e",
+        "name": "notify2",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "770786220283396106",
+          "content": "=🟥 {{ $('deactivate').item.json.userDisplayName }} Deactivated Emergency Admin Access."
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          160,
+          416
+        ],
+        "id": "f9ae0765-94e3-425f-aebe-f64ce818f47e",
+        "name": "notify tank2",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "4M8XHyQ7dJ7v1xXy",
+            "mode": "list",
+            "cachedResultName": "Bomb Squad Admin Role Backup",
+            "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/4M8XHyQ7dJ7v1xXy"
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          -208,
+          -192
+        ],
+        "id": "e7b2b429-204c-4b01-b3a0-36f14d65aef3",
+        "name": "Get info"
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "={{ $('deactivate').item.json.userId }}",
+          "content": "🟧 Emergency Admin Access Already Deactivated."
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          160,
+          240
+        ],
+        "id": "9ea66dce-f06d-4be2-a6ac-499d6c54a3e2",
+        "name": "notify3",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "targetType": "user-dm",
+          "userId": "770786220283396106",
+          "content": "=🟧 {{ $('deactivate').item.json.userDisplayName }} Tried to Deactivate Emergency Admin Access."
+        },
+        "type": "n8n-nodes-discord-bots.discordBot",
+        "typeVersion": 1,
+        "position": [
+          304,
+          240
+        ],
+        "id": "ef593d01-2fa0-4125-bfdd-00d57a806cae",
+        "name": "notify tank3",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "b07cccd3-c56d-487b-b427-bbb6c56ba684",
+                "leftValue": "={{ $json.current_status }}",
+                "rightValue": "on",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -64,
+          224
+        ],
+        "id": "c7294069-eb8d-4190-bb3b-ec2f0fdb55ac",
+        "name": "is on?"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "value": "4M8XHyQ7dJ7v1xXy",
+            "mode": "list",
+            "cachedResultName": "Bomb Squad Admin Role Backup",
+            "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/4M8XHyQ7dJ7v1xXy"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "isNotEmpty"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "role_id": "={{ $('create role').item.json.roleId }}",
+              "current_status": "on"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "role_id",
+                "displayName": "role_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "current_status",
+                "displayName": "current_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "id": "eec70548-8726-4e67-925f-c1d49ef35ad2",
+        "name": "save id & status"
+      }
+    ],
+    "connections": {
+      "delete role": {
+        "main": [
+          [
+            {
+              "node": "set to off",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "create role": {
+        "main": [
+          [
+            {
+              "node": "update perms",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "update perms": {
+        "main": [
+          [
+            {
+              "node": "assign role tank",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "activate": {
+        "main": [
+          [
+            {
+              "node": "Get info",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "deactivate": {
+        "main": [
+          [
+            {
+              "node": "get role id",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "notify": {
+        "main": [
+          [
+            {
+              "node": "notify tank",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "assign role tank": {
+        "main": [
+          [
+            {
+              "node": "assign role chaos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get role id": {
+        "main": [
+          [
+            {
+              "node": "is on?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "assign role chaos": {
+        "main": [
+          [
+            {
+              "node": "assign role sane",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "assign role sane": {
+        "main": [
+          [
+            {
+              "node": "save id & status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "notify1": {
+        "main": [
+          [
+            {
+              "node": "notify tank1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "is off?": {
+        "main": [
+          [
+            {
+              "node": "create role",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "notify1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "notify2": {
+        "main": [
+          [
+            {
+              "node": "notify tank2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set to off": {
+        "main": [
+          [
+            {
+              "node": "notify2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get info": {
+        "main": [
+          [
+            {
+              "node": "is off?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "notify3": {
+        "main": [
+          [
+            {
+              "node": "notify tank3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "is on?": {
+        "main": [
+          [
+            {
+              "node": "delete role",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "notify3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "save id & status": {
+        "main": [
+          [
+            {
+              "node": "notify",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version ebc9b0b6",
+    "description": "",
+    "autosaved": false,
+    "createdAt": "2026-05-29T10:21:13.509Z",
+    "updatedAt": "2026-05-29T10:21:14.647Z"
+  },
+  "activeVersionId": "ebc9b0b6-1889-481b-8206-3fd62c1f0fca",
+  "connections": {
+    "delete role": {
+      "main": [
+        [
+          {
+            "node": "set to off",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create role": {
+      "main": [
+        [
+          {
+            "node": "update perms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update perms": {
+      "main": [
+        [
+          {
+            "node": "assign role tank",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "activate": {
+      "main": [
+        [
+          {
+            "node": "Get info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deactivate": {
+      "main": [
+        [
+          {
+            "node": "get role id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notify": {
+      "main": [
+        [
+          {
+            "node": "notify tank",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "assign role tank": {
+      "main": [
+        [
+          {
+            "node": "assign role chaos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get role id": {
+      "main": [
+        [
+          {
+            "node": "is on?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "assign role chaos": {
+      "main": [
+        [
+          {
+            "node": "assign role sane",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "assign role sane": {
+      "main": [
+        [
+          {
+            "node": "save id & status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notify1": {
+      "main": [
+        [
+          {
+            "node": "notify tank1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is off?": {
+      "main": [
+        [
+          {
+            "node": "create role",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "notify1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notify2": {
+      "main": [
+        [
+          {
+            "node": "notify tank2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set to off": {
+      "main": [
+        [
+          {
+            "node": "notify2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get info": {
+      "main": [
+        [
+          {
+            "node": "is off?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notify3": {
+      "main": [
+        [
+          {
+            "node": "notify tank3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is on?": {
+      "main": [
+        [
+          {
+            "node": "delete role",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "notify3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save id & status": {
+      "main": [
+        [
+          {
+            "node": "notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-05-15T10:21:34.613Z",
+  "id": "j9iRsQg7vkF9UL62",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Bomb Squad Admin Role Backup",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "create-role",
+        "roleMgmtGuildId": "1315632863437131819",
+        "roleCreateName": "HD2-Vote-Ping",
+        "roleCreateFields": {}
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        0
+      ],
+      "id": "d1fdf671-9178-4ae7-b2c5-91303586be76",
+      "name": "create role",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete-role",
+        "roleMgmtGuildId": "1315632863437131819",
+        "roleMgmtRoleId": "={{ $json.role_id }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        416
+      ],
+      "id": "6983a94b-c4b5-4d71-840d-854cc6030a72",
+      "name": "delete role",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://discord.com/api/v10/guilds/1315632863437131819/roles/{{ $json.roleId }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "discordBotApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"permissions\": \"8\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -128,
+        0
+      ],
+      "id": "0ccfdcaf-06ab-4c9d-9d09-db9ef1f15b28",
+      "name": "update perms",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "={{ $('activate').item.json.userId }}",
+        "content": "🟩 Emergency Admin Access Activated."
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        592,
+        0
+      ],
+      "id": "895265ef-1492-4dd1-99b8-faf1ffa08c77",
+      "name": "notify",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "add-role",
+        "memberGuildId": "1315632863437131819",
+        "memberUserId": "770786220283396106",
+        "memberRoleId": "={{ $('create role').item.json.roleId }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        16,
+        0
+      ],
+      "id": "773ff6c1-0ed2-4cd7-8abf-27373b0d4fb3",
+      "name": "assign role tank",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "event": "direct-message",
+        "pattern": "starts-with",
+        "patternValue": "activate",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        -192
+      ],
+      "id": "7c45b3de-5251-49c1-9eda-937f124e416e",
+      "name": "activate",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "event": "direct-message",
+        "pattern": "starts-with",
+        "patternValue": "deactivate",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        224
+      ],
+      "id": "7d6c6db1-d13e-489a-9f88-cb90061e5071",
+      "name": "deactivate",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "770786220283396106",
+        "content": "=🟩 {{ $('activate').item.json.userDisplayName }} Activated Emergency Admin Access."
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        736,
+        0
+      ],
+      "id": "7a01b4d2-8837-48d6-9f9a-1be2ff9a361b",
+      "name": "notify tank",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4M8XHyQ7dJ7v1xXy",
+          "mode": "list",
+          "cachedResultName": "Bomb Squad Admin Role Backup",
+          "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/4M8XHyQ7dJ7v1xXy"
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -208,
+        224
+      ],
+      "id": "0bc80127-8972-44ee-ab91-9a4e477b68e2",
+      "name": "get role id"
+    },
+    {
+      "parameters": {
+        "operation": "add-role",
+        "memberGuildId": "1315632863437131819",
+        "memberUserId": "788190569427501096",
+        "memberRoleId": "={{ $('create role').item.json.roleId }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        160,
+        0
+      ],
+      "id": "6637d774-d4d4-4397-bcbf-43e2eec9197e",
+      "name": "assign role chaos",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "add-role",
+        "memberGuildId": "1315632863437131819",
+        "memberUserId": "783276099697508352",
+        "memberRoleId": "={{ $('create role').item.json.roleId }}"
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        304,
+        0
+      ],
+      "id": "4a5357c6-635d-43f8-a253-99ca3af9bfc9",
+      "name": "assign role sane",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "={{ $('activate').item.json.userId }}",
+        "content": "🟦 Emergency Admin Access Already Activated."
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -176
+      ],
+      "id": "45c3ae8e-ba56-4de6-ad30-eb82b36162ef",
+      "name": "notify1",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "770786220283396106",
+        "content": "=🟦 {{ $('activate').item.json.userDisplayName }} Tried to Activate Emergency Admin Access."
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -176
+      ],
+      "id": "54d23082-9a7a-4897-9ec5-bad462d56426",
+      "name": "notify tank1",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4M8XHyQ7dJ7v1xXy",
+          "mode": "list",
+          "cachedResultName": "Bomb Squad Admin Role Backup",
+          "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/4M8XHyQ7dJ7v1xXy"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "current_status",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "current_status": "off"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "role_id",
+              "displayName": "role_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "current_status",
+              "displayName": "current_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -128,
+        416
+      ],
+      "id": "0e75ca4e-14c8-4142-bdf7-9905247f2090",
+      "name": "set to off"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b07cccd3-c56d-487b-b427-bbb6c56ba684",
+              "leftValue": "={{ $json.current_status }}",
+              "rightValue": "off",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -64,
+        -192
+      ],
+      "id": "68ce8911-fd11-454b-aa39-cd77d13c8c7e",
+      "name": "is off?"
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "={{ $('deactivate').item.json.userId }}",
+        "content": "🟥 Emergency Admin Access Deactivated."
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        16,
+        416
+      ],
+      "id": "07b693cc-d6df-4a5e-a69e-329ddfd71d1e",
+      "name": "notify2",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "770786220283396106",
+        "content": "=🟥 {{ $('deactivate').item.json.userDisplayName }} Deactivated Emergency Admin Access."
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        160,
+        416
+      ],
+      "id": "f9ae0765-94e3-425f-aebe-f64ce818f47e",
+      "name": "notify tank2",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4M8XHyQ7dJ7v1xXy",
+          "mode": "list",
+          "cachedResultName": "Bomb Squad Admin Role Backup",
+          "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/4M8XHyQ7dJ7v1xXy"
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -208,
+        -192
+      ],
+      "id": "e7b2b429-204c-4b01-b3a0-36f14d65aef3",
+      "name": "Get info"
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "={{ $('deactivate').item.json.userId }}",
+        "content": "🟧 Emergency Admin Access Already Deactivated."
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        160,
+        240
+      ],
+      "id": "9ea66dce-f06d-4be2-a6ac-499d6c54a3e2",
+      "name": "notify3",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "targetType": "user-dm",
+        "userId": "770786220283396106",
+        "content": "=🟧 {{ $('deactivate').item.json.userDisplayName }} Tried to Deactivate Emergency Admin Access."
+      },
+      "type": "n8n-nodes-discord-bots.discordBot",
+      "typeVersion": 1,
+      "position": [
+        304,
+        240
+      ],
+      "id": "ef593d01-2fa0-4125-bfdd-00d57a806cae",
+      "name": "notify tank3",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b07cccd3-c56d-487b-b427-bbb6c56ba684",
+              "leftValue": "={{ $json.current_status }}",
+              "rightValue": "on",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -64,
+        224
+      ],
+      "id": "c7294069-eb8d-4190-bb3b-ec2f0fdb55ac",
+      "name": "is on?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4M8XHyQ7dJ7v1xXy",
+          "mode": "list",
+          "cachedResultName": "Bomb Squad Admin Role Backup",
+          "cachedResultUrl": "/projects/MgjxpSRAFCz8XSCR/datatables/4M8XHyQ7dJ7v1xXy"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "role_id": "={{ $('create role').item.json.roleId }}",
+            "current_status": "on"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "role_id",
+              "displayName": "role_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "current_status",
+              "displayName": "current_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "eec70548-8726-4e67-925f-c1d49ef35ad2",
+      "name": "save id & status"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "j9iRsQg7vkF9UL62",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-05-15T10:21:34.613Z",
+      "updatedAt": "2026-05-15T10:21:34.613Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2026-09-14T04:53:42.748Z",
+  "versionId": "ebc9b0b6-1889-481b-8206-3fd62c1f0fca"
+}
