@@ -1,0 +1,96 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "run on click": {
+      "main": [
+        [
+          {
+            "node": "send msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-05-03T01:51:55.038Z",
+  "id": "bYVdpTmlwSyUpkeO",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Manual Control",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        -224
+      ],
+      "id": "3acce91b-b7af-4091-a5a0-7ad76beb63ed",
+      "name": "run on click"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1315632863437131819",
+          "mode": "list",
+          "cachedResultName": "The Bomb Squad",
+          "cachedResultUrl": "https://discord.com/channels/1315632863437131819"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1326501741738328105",
+          "mode": "list",
+          "cachedResultName": "🪖seaf-personal",
+          "cachedResultUrl": "https://discord.com/channels/1315632863437131819/1326501741738328105"
+        },
+        "content": "A true Helldiver never needs an elevated position to spread Managed Democracy. Just point your iron sights at the enemy and pull the trigger—preferably with a Senator in hand! Freedom never rests.",
+        "options": {
+          "message_reference": "1549272838702243930"
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        -224
+      ],
+      "id": "cd647d52-d7a3-4476-b22e-de9776c701c8",
+      "name": "send msg",
+      "webhookId": "0139cb4f-b43f-44d8-a380-36eac0c60011",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "bYVdpTmlwSyUpkeO",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-05-03T01:51:55.038Z",
+      "updatedAt": "2026-05-03T01:51:55.038Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-09-19T03:52:26.700Z",
+  "versionId": "d33caeb4-15bc-4020-a59c-e8110bb08b9b"
+}
