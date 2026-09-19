@@ -1,0 +1,195 @@
+{
+  "active": true,
+  "activeVersion": {
+    "versionId": "398b7bfe-6568-45aa-802d-e87a35d4c188",
+    "workflowId": "QkI-ai698wZcglpJSk-p_",
+    "nodes": [
+      {
+        "parameters": {
+          "guildIds": [
+            "1315632863437131819"
+          ],
+          "roleIds": [
+            "1458652482036170864"
+          ],
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-discord-bots.discordBotTrigger",
+        "typeVersion": 1,
+        "position": [
+          -496,
+          -416
+        ],
+        "id": "26f4adde-bb69-471b-a425-abc27210fa9a",
+        "name": "watch racists",
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "message",
+          "operation": "react",
+          "guildId": {
+            "__rl": true,
+            "value": "1315632863437131819",
+            "mode": "list",
+            "cachedResultName": "The Bomb Squad",
+            "cachedResultUrl": "https://discord.com/channels/1315632863437131819"
+          },
+          "channelId": {
+            "__rl": true,
+            "value": "={{ $json.channelId }}",
+            "mode": "id"
+          },
+          "messageId": "={{ $('watch racists').item.json.messageId }}",
+          "emoji": "a:racistbirb:1459790865848471582"
+        },
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          -352,
+          -416
+        ],
+        "id": "591dce92-f9a5-454d-a2f5-4f0bffdff521",
+        "name": "brand them with birb",
+        "webhookId": "3d6ffebb-b162-47fd-a67b-6c9ddca651cb",
+        "retryOnFail": true,
+        "credentials": {
+          "discordBotApi": {
+            "id": "3SFVnF75zf8a4W5o",
+            "name": "John Helldiver"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "watch racists": {
+        "main": [
+          [
+            {
+              "node": "brand them with birb",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Eon Hunt",
+    "name": "Version 398b7bfe",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-09-19T03:57:03.723Z",
+    "updatedAt": "2026-09-19T03:57:13.933Z"
+  },
+  "activeVersionId": "398b7bfe-6568-45aa-802d-e87a35d4c188",
+  "connections": {
+    "watch racists": {
+      "main": [
+        [
+          {
+            "node": "brand them with birb",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-08T02:45:34.349Z",
+  "id": "QkI-ai698wZcglpJSk-p_",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Racist Birb Reaction",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "guildIds": [
+          "1315632863437131819"
+        ],
+        "roleIds": [
+          "1458652482036170864"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-discord-bots.discordBotTrigger",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        -416
+      ],
+      "id": "26f4adde-bb69-471b-a425-abc27210fa9a",
+      "name": "watch racists",
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "react",
+        "guildId": {
+          "__rl": true,
+          "value": "1315632863437131819",
+          "mode": "list",
+          "cachedResultName": "The Bomb Squad",
+          "cachedResultUrl": "https://discord.com/channels/1315632863437131819"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $json.channelId }}",
+          "mode": "id"
+        },
+        "messageId": "={{ $('watch racists').item.json.messageId }}",
+        "emoji": "a:racistbirb:1459790865848471582"
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        -416
+      ],
+      "id": "591dce92-f9a5-454d-a2f5-4f0bffdff521",
+      "name": "brand them with birb",
+      "webhookId": "3d6ffebb-b162-47fd-a67b-6c9ddca651cb",
+      "retryOnFail": true,
+      "credentials": {
+        "discordBotApi": {
+          "id": "3SFVnF75zf8a4W5o",
+          "name": "John Helldiver"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "QkI-ai698wZcglpJSk-p_",
+      "projectId": "MgjxpSRAFCz8XSCR",
+      "createdAt": "2026-01-08T02:45:34.349Z",
+      "updatedAt": "2026-01-08T02:45:34.349Z"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-09-19T03:57:03.722Z",
+  "versionId": "398b7bfe-6568-45aa-802d-e87a35d4c188"
+}
